@@ -2,134 +2,209 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Database Systems – فهرس المذاكرة</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Database Basics – فهرس المذاكرة</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#eef1f6;--surface:#fff;--ink:#14213d;--mute:#5b6679;--line:#d5dbe6;--acc:#0b6e8a;--acc-soft:#dff1f6;--lab:#b4540a;--lab-soft:#fbeadb;--btn-ink:#fff;--sh:0 1px 2px rgba(20,33,61,.06),0 8px 24px rgba(20,33,61,.06)}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1524;--surface:#16203a;--ink:#e8edf7;--mute:#9aa7bf;--line:#2a3757;--acc:#5fc3df;--acc-soft:#14323f;--lab:#f0a566;--lab-soft:#3a2a1a;--btn-ink:#0e1524;--sh:none}}
-:root[data-theme="dark"]{--bg:#0e1524;--surface:#16203a;--ink:#e8edf7;--mute:#9aa7bf;--line:#2a3757;--acc:#5fc3df;--acc-soft:#14323f;--lab:#f0a566;--lab-soft:#3a2a1a;--btn-ink:#0e1524;--sh:none}
+:root{--bg:#0a0714;--p1:#130d22;--p2:#1a1230;--line:#2c2150;--a:#c4a7ff;--a2:#9b6bff;--ad:#5b3bb0;--t:#ece6fa;--m:#a99cc9;--ok:#7be0b0;--warn:#ffb86b;--dot:rgba(196,167,255,.09);--glow:rgba(155,107,255,.32);color-scheme:dark}
+:root[data-theme="light"]{--bg:#f7f4ff;--p1:#fff;--p2:#f1ebff;--line:#d9cdf5;--a:#4b2aa8;--a2:#6d3fe0;--ad:#a98ef0;--t:#201838;--m:#5e5280;--ok:#0b7a4a;--warn:#a85a00;--dot:rgba(75,42,168,.08);--glow:rgba(109,63,224,.16);color-scheme:light}
 *{box-sizing:border-box}
-html{color-scheme:light dark;scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.8 "IBM Plex Sans Arabic",Tahoma,sans-serif}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--t);font:400 16px/1.75 "IBM Plex Sans Arabic",system-ui,Tahoma,sans-serif;background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:26px 26px;min-height:100vh;padding-top:env(safe-area-inset-top,0px)}
 .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
-header{padding:56px 0 28px}
-.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:28px}
-.tag{font:500 13px "IBM Plex Mono",monospace;color:var(--acc);direction:ltr}
-.theme{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:6px 16px;font:inherit;font-size:14px;cursor:pointer}
-h1{font-size:clamp(34px,6vw,56px);line-height:1.2;margin:0 0 12px;font-weight:700}
-h1 small{display:block;font:500 clamp(15px,2.2vw,18px)/1.6 "IBM Plex Mono",monospace;color:var(--mute);direction:ltr;text-align:right;margin-top:10px}
-.lead{max-width:60ch;color:var(--mute);margin:0 0 24px}
-.tools{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
-.search{flex:1 1 260px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:12px 16px;font:inherit}
-.search:focus{outline:2px solid var(--acc);outline-offset:1px}
-.count{color:var(--mute);font-size:14px}
-.path{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:28px 0 8px;font:500 13px "IBM Plex Mono",monospace;direction:ltr;justify-content:flex-end}
-.path a{color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--surface);padding:4px 12px;border-radius:8px}
-.path a:hover{border-color:var(--acc)}
-.path i{color:var(--mute);font-style:normal}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:20px;padding:12px 0 40px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh);padding:24px;display:flex;flex-direction:column;border-top:4px solid var(--acc)}
-.card.lab{border-top-color:var(--lab)}
-.meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.file{font:500 13px "IBM Plex Mono",monospace;color:var(--acc);background:var(--acc-soft);padding:2px 10px;border-radius:6px;direction:ltr}
-.lab .file{color:var(--lab);background:var(--lab-soft)}
-.kind{font-size:13px;color:var(--mute)}
-.card h2{margin:0;font-size:22px;line-height:1.4}
-.en{direction:ltr;text-align:right;font:500 14px "IBM Plex Mono",monospace;color:var(--mute);margin:2px 0 12px}
-.card p{margin:0 0 14px;color:var(--mute);font-size:15px}
-ul{list-style:none;padding:0;margin:0 0 20px;display:flex;flex-wrap:wrap;gap:8px}
-li{font-size:14px;border:1px solid var(--line);border-radius:8px;padding:2px 12px;direction:ltr}
-li.hit{background:var(--acc-soft);border-color:var(--acc)}
-.open{margin-top:auto;display:inline-flex;justify-content:center;align-items:center;text-decoration:none;background:var(--acc);color:var(--btn-ink);padding:12px 20px;border-radius:12px;font-weight:700}
-.lab .open{background:var(--lab)}
-.open:hover{filter:brightness(1.08)}
-.open:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
-.empty{display:none;text-align:center;color:var(--mute);padding:24px}
-footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--mute);font-size:14px}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace;direction:ltr}
+.top{display:flex;justify-content:space-between;align-items:center;padding:22px 0}
+.logo{font-size:14px;font-weight:700;color:var(--a)}
+.theme{background:var(--p1);color:var(--t);border:1px solid var(--line);border-radius:999px;padding:7px 18px;font:inherit;font-size:14px;cursor:pointer}
+.theme:hover{border-color:var(--a2)}
+h1{font-size:clamp(34px,6vw,56px);line-height:1.25;margin:18px 0 6px;font-weight:700;background:linear-gradient(135deg,var(--a),var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--m);max-width:58ch;margin:0 0 22px}
+/* terminal */
+.term{background:var(--p1);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 18px 50px var(--glow);margin-bottom:22px}
+.bar{display:flex;align-items:center;gap:7px;padding:10px 14px;background:var(--p2);border-bottom:1px solid var(--line);direction:ltr}
+.bar i{width:11px;height:11px;border-radius:50%;background:var(--ad)}
+.bar i:nth-child(2){background:var(--a2)}.bar i:nth-child(3){background:var(--a)}
+.bar span{margin-inline-start:auto;font-size:12px;color:var(--m)}
+pre{margin:0;padding:18px 20px;font:500 14px/1.9 "JetBrains Mono",monospace;direction:ltr;text-align:left;overflow-x:auto;color:var(--t)}
+.kw{color:var(--a2);font-weight:700}.st{color:var(--ok)}.cm{color:var(--m)}
+.res{padding:10px 20px;border-top:1px solid var(--line);font-size:13px;color:var(--ok);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.res span:last-child{color:var(--m)}
+/* search */
+.find{display:flex;align-items:stretch;direction:ltr;border:1px solid var(--line);background:var(--p1);border-radius:12px;overflow:hidden;margin-bottom:6px}
+.find:focus-within{border-color:var(--a2);box-shadow:0 0 0 3px var(--glow)}
+.find b{display:flex;align-items:center;padding:0 14px;background:var(--p2);color:var(--a2);font:700 13px "JetBrains Mono",monospace;white-space:nowrap}
+.find input{flex:1;min-width:0;border:0;background:transparent;color:var(--t);padding:13px 14px;font:500 14px "JetBrains Mono",monospace;outline:none}
+/* relations */
+.rel{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:flex-end;margin:20px 0 6px;font-size:13px}
+.rel a{color:var(--t);text-decoration:none;border:1px solid var(--line);background:var(--p1);padding:3px 12px;border-radius:8px}
+.rel a:hover{border-color:var(--a2)}
+.rel em{color:var(--a2);font-style:normal}
+/* entities */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,470px),1fr));gap:22px;padding:14px 0 44px}
+.ent{background:var(--p1);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:border-color .25s,box-shadow .25s}
+.ent:hover{border-color:var(--a2);box-shadow:0 12px 36px var(--glow)}
+.eh{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px;background:linear-gradient(135deg,var(--ad),var(--a2));color:#fff;direction:ltr}
+.eh strong{font:700 14px "JetBrains Mono",monospace}
+.eh span{font-size:12px;opacity:.9;font-family:"IBM Plex Sans Arabic",sans-serif;direction:rtl}
+.eb{padding:16px 16px 18px;display:flex;flex-direction:column;flex:1}
+.eb h2{margin:0;font-size:21px;line-height:1.4}
+.eb .en{font-size:12px;color:var(--a);margin:0 0 10px;text-align:right}
+.eb p{margin:0 0 14px;color:var(--m);font-size:15px}
+.rows{list-style:none;margin:0 0 18px;padding:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;font:400 13px/1 "JetBrains Mono",monospace;direction:ltr}
+.rows li{display:grid;grid-template-columns:34px 1fr auto;gap:8px;align-items:center;padding:9px 12px;border-top:1px solid var(--line)}
+.rows li:first-child{border-top:0}
+.rows li:nth-child(odd){background:var(--p2)}
+.rows li.hit{background:var(--a2);color:#fff}
+.rows li.hit .ty,.rows li.hit .k{color:#fff}
+.k{font-weight:700;font-size:11px;color:var(--warn)}
+.k.fk{color:var(--a)}
+.ty{color:var(--m);font-size:12px}
+.open{margin-top:auto;display:flex;justify-content:center;text-decoration:none;background:linear-gradient(135deg,var(--a2),var(--ad));color:#fff;padding:12px 20px;border-radius:12px;font-weight:700}
+.open:hover{filter:brightness(1.12)}
+.open:focus-visible,.theme:focus-visible,.soc a:focus-visible,.rel a:focus-visible{outline:3px solid var(--a);outline-offset:2px}
+.empty{display:none;text-align:center;color:var(--m);padding:20px}
+footer{border-top:1px solid var(--line);padding:30px 0 calc(40px + env(safe-area-inset-bottom,0px));text-align:center}
+footer p{margin:0 0 16px;color:var(--m);font-size:15px}
+footer p b{color:var(--t)}
+.soc{display:flex;justify-content:center;gap:14px}
+.soc a{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:var(--p1);border:1px solid var(--line);color:var(--a);transition:transform .2s,border-color .2s,box-shadow .2s}
+.soc a:hover{transform:translateY(-3px);border-color:var(--a2);box-shadow:0 8px 22px var(--glow)}
+.soc svg{width:22px;height:22px;fill:currentColor}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
 <div class="wrap">
-<header>
-  <div class="top"><span class="tag">DB / STUDY-INDEX</span><button class="theme" id="theme" type="button">الوضع الداكن</button></div>
-  <h1>دليل مذاكرة قواعد البيانات<small>ER Modeling · Normalization · SQL</small></h1>
-  <p class="lead">كل ملفاتك في مكان واحد: ثلاثة فصول نظرية وملف تطبيق عملي لـ SQL. ابدأ بالترتيب من الفصل الأول، أو ابحث عن أي موضوع مباشرة.</p>
-  <div class="tools">
-    <input class="search" id="q" type="search" placeholder="ابحث عن موضوع: Cardinality, SELECT, Normalization…" aria-label="بحث">
-    <span class="count" id="count"></span>
-  </div>
-  <nav class="path" aria-label="مسار المذاكرة"><a href="CH1.html">CH1</a><i>→</i><a href="CH2.html">CH2</a><i>→</i><a href="CH3.html">CH3</a><i>→</i><a href="Practical.html">Practical</a></nav>
-</header>
+  <div class="top"><span class="logo mono">&lt;DB/StudyIndex&gt;</span><button class="theme" id="theme" type="button">الوضع الفاتح</button></div>
 
-<main class="grid">
-  <article class="card">
-    <div class="meta"><span class="file">CH1.html</span><span class="kind">الفصل الأول · نظري</span></div>
-    <h2>نمذجة الكيانات والعلاقات</h2>
-    <div class="en">Entity Relationship Modeling</div>
-    <p>قواعد العمل وكيف تتحول إلى قيود في قاعدة البيانات، وبناء مخطط ER خطوة بخطوة على مثال Tiny College.</p>
-    <ul><li>Business Rules</li><li>Data Names &amp; Definitions</li><li>Developing an ERD</li><li>Tiny College</li><li>Cardinality</li><li>Specialization</li><li>Quiz</li></ul>
-    <a class="open" href="CH1.html">افتح الفصل الأول ←</a>
-  </article>
+  <header>
+    <h1>دليل مذاكرة قواعد البيانات</h1>
+    <p class="sub">ثلاثة فصول نظرية وملف تطبيق عملي لـ SQL، بشرح تفاعلي وأسئلة واختبارات. كل ملف هنا جدول، وكل موضوع حقل فيه.</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i><span class="mono">study_guide.sql</span></div>
+<pre><span class="kw">SELECT</span> file, title, topics
+<span class="kw">FROM</span>   study_guide
+<span class="kw">WHERE</span>  subject = <span class="st">'Database Basics'</span>
+<span class="kw">ORDER BY</span> chapter;  <span class="cm">-- ER · Normalization · SQL</span></pre>
+      <div class="res mono"><span id="rc">4 rows returned</span><span>0.001 sec</span></div>
+    </div>
+    <label class="find mono"><b>WHERE topic LIKE</b><input id="q" type="search" placeholder="'%Cardinality%'" aria-label="بحث"></label>
+    <nav class="rel mono" aria-label="مسار المذاكرة"><a href="CH1.html">CH1</a><em>1 ─&lt; N</em><a href="CH2.html">CH2</a><em>1 ─&lt; N</em><a href="CH3.html">CH3</a><em>1 ─&lt; N</em><a href="Practical.html">Practical</a></nav>
+  </header>
 
-  <article class="card">
-    <div class="meta"><span class="file">CH2.html</span><span class="kind">الفصل الثاني · نظري</span></div>
-    <h2>تصميم قاعدة البيانات</h2>
-    <div class="en">Database Design</div>
-    <p>نموذج ER والجداول العلائقية والمفاتيح وقواعد التكامل وقاموس البيانات، مع تجارب تفاعلية واختبار.</p>
-    <ul><li>E-R Model</li><li>Relational Tables</li><li>Keys</li><li>Integrity Rules</li><li>Data Dictionary</li><li>Key Explorer</li><li>Integrity Simulator</li><li>Quiz</li></ul>
-    <a class="open" href="CH2.html">افتح الفصل الثاني ←</a>
-  </article>
+  <main class="grid">
+    <article class="ent">
+      <div class="eh"><strong>CH1_er_modeling</strong><span>الفصل الأول · نظري</span></div>
+      <div class="eb">
+        <h2>نمذجة الكيانات والعلاقات</h2><div class="en mono">Entity Relationship Modeling</div>
+        <p>قواعد العمل وكيف تتحول إلى قيود، وبناء مخطط ER خطوة بخطوة على مثال Tiny College.</p>
+        <ul class="rows">
+          <li><span class="k">PK</span><span>chapter_id</span><span class="ty">1</span></li>
+          <li><span class="k"></span><span>Business Rules</span><span class="ty">TEXT</span></li>
+          <li><span class="k"></span><span>Data Names &amp; Definitions</span><span class="ty">TEXT</span></li>
+          <li><span class="k"></span><span>Developing an ERD</span><span class="ty">DIAGRAM</span></li>
+          <li><span class="k"></span><span>Tiny College</span><span class="ty">EXAMPLE</span></li>
+          <li><span class="k"></span><span>Cardinality · Specialization</span><span class="ty">TEXT</span></li>
+          <li><span class="k"></span><span>Quiz</span><span class="ty">QUIZ</span></li>
+          <li><span class="k fk">FK</span><span>next_chapter</span><span class="ty">→ CH2</span></li>
+        </ul>
+        <a class="open" href="CH1.html">افتح الفصل الأول ←</a>
+      </div>
+    </article>
 
-  <article class="card">
-    <div class="meta"><span class="file">CH3.html</span><span class="kind">الفصل الثالث · نظري</span></div>
-    <h2>النمذجة والتطبيع</h2>
-    <div class="en">ER Modeling &amp; Normalization</div>
-    <p>الـ Cardinality بصيغة (min, max)، ثم التطبيع خطوة بخطوة، وحالة دراسية لشركة إنشاءات.</p>
-    <ul><li>Business Rules</li><li>Tiny College</li><li>Cardinality (min, max)</li><li>Normalization</li><li>Construction Company Case</li></ul>
-    <a class="open" href="CH3.html">افتح الفصل الثالث ←</a>
-  </article>
+    <article class="ent">
+      <div class="eh"><strong>CH2_database_design</strong><span>الفصل الثاني · نظري</span></div>
+      <div class="eb">
+        <h2>تصميم قاعدة البيانات</h2><div class="en mono">Database Design</div>
+        <p>نموذج ER والجداول العلائقية والمفاتيح وقواعد التكامل وقاموس البيانات، مع تجارب تفاعلية.</p>
+        <ul class="rows">
+          <li><span class="k">PK</span><span>chapter_id</span><span class="ty">2</span></li>
+          <li><span class="k"></span><span>E-R Model</span><span class="ty">TEXT</span></li>
+          <li><span class="k"></span><span>Relational Tables</span><span class="ty">TEXT</span></li>
+          <li><span class="k"></span><span>Keys</span><span class="ty">DEMO</span></li>
+          <li><span class="k"></span><span>Integrity Rules</span><span class="ty">DEMO</span></li>
+          <li><span class="k"></span><span>Data Dictionary</span><span class="ty">TEXT</span></li>
+          <li><span class="k"></span><span>Quiz</span><span class="ty">QUIZ</span></li>
+          <li><span class="k fk">FK</span><span>next_chapter</span><span class="ty">→ CH3</span></li>
+        </ul>
+        <a class="open" href="CH2.html">افتح الفصل الثاني ←</a>
+      </div>
+    </article>
 
-  <article class="card lab">
-    <div class="meta"><span class="file">Practical.html</span><span class="kind">العملي · تفاعلي</span></div>
-    <h2>معامل SQL العملية</h2>
-    <div class="en">SQL Practical Labs</div>
-    <p>ملخص SQL في 5 دقائق، ومحرر تجريبي تكتب فيه الاستعلامات مباشرة، و7 أجزاء تدريبية من الأساسيات حتى الاستعلامات المتقدمة.</p>
-    <ul><li>SQL in 5 minutes</li><li>Playground</li><li>SQL Editor</li><li>CREATE TABLE</li><li>INSERT</li><li>SELECT &amp; WHERE</li><li>Advanced Queries</li></ul>
-    <a class="open" href="Practical.html">افتح العملي ←</a>
-  </article>
-</main>
-<p class="empty" id="empty">لا توجد نتائج مطابقة لبحثك.</p>
+    <article class="ent">
+      <div class="eh"><strong>CH3_normalization</strong><span>الفصل الثالث · نظري</span></div>
+      <div class="eb">
+        <h2>النمذجة والتطبيع</h2><div class="en mono">ER Modeling &amp; Normalization</div>
+        <p>الـ Cardinality بصيغة (min, max)، ثم التطبيع خطوة بخطوة، وحالة دراسية لشركة إنشاءات.</p>
+        <ul class="rows">
+          <li><span class="k">PK</span><span>chapter_id</span><span class="ty">3</span></li>
+          <li><span class="k"></span><span>Business Rules</span><span class="ty">TEXT</span></li>
+          <li><span class="k"></span><span>Tiny College</span><span class="ty">EXAMPLE</span></li>
+          <li><span class="k"></span><span>Cardinality (min, max)</span><span class="ty">TEXT</span></li>
+          <li><span class="k"></span><span>Normalization</span><span class="ty">STEPS</span></li>
+          <li><span class="k"></span><span>Construction Company Case</span><span class="ty">CASE</span></li>
+          <li><span class="k fk">FK</span><span>next_chapter</span><span class="ty">→ Practical</span></li>
+        </ul>
+        <a class="open" href="CH3.html">افتح الفصل الثالث ←</a>
+      </div>
+    </article>
 
-<footer><a href="https://instagram.com/alaaherzallah05" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 7a5 5 0 100 10 5 5 0 000-10zm0 8.2A3.2 3.2 0 1112 8.8a3.2 3.2 0 010 6.4zM17.3 6.2a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4zM7.5 2h9A5.5 5.5 0 0122 7.5v9a5.5 5.5 0 01-5.5 5.5h-9A5.5 5.5 0 012 16.5v-9A5.5 5.5 0 017.5 2zm0 1.8A3.7 3.7 0 003.8 7.5v9a3.7 3.7 0 003.7 3.7h9a3.7 3.7 0 003.7-3.7v-9a3.7 3.7 0 00-3.7-3.7z"/></svg></a>
-<a href="https://wa.me/962775725298" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2zm0 18.2a8.2 8.2 0 01-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1112 20.200zm4.500-6.100c-.2-.1-1.500-.7-1.700-.8s-.4-.1-.6.100-.6.8-.8 1-.3.2-.6.1a6.700 6.700 0 01-3.300-2.900c-.2-.4.200-.4.700-1.300.1-.1 0-.3 0-.4l-.8-1.800c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 00-.7.300 3 3 0 00-.9 2.200 5.300 5.300 0 001.100 2.800 12 12 0 004.600 4c1.700.7 2.400.8 3.200.7a2.700 2.700 0 001.800-1.300 2.200 2.200 0 00.2-1.300c-.1-.1-.3-.2-.5-.3z"/></svg></a></footer>
+    <article class="ent">
+      <div class="eh"><strong>Practical_sql_labs</strong><span>العملي · تفاعلي</span></div>
+      <div class="eb">
+        <h2>معامل SQL العملية</h2><div class="en mono">SQL Practical Labs</div>
+        <p>ملخص SQL في 5 دقائق، ومحرر تجريبي تكتب فيه الاستعلامات مباشرة، و7 أجزاء تدريبية.</p>
+        <ul class="rows">
+          <li><span class="k">PK</span><span>lab_id</span><span class="ty">4</span></li>
+          <li><span class="k"></span><span>SQL in 5 minutes</span><span class="ty">SUMMARY</span></li>
+          <li><span class="k"></span><span>Playground · SQL Editor</span><span class="ty">LIVE</span></li>
+          <li><span class="k"></span><span>CREATE TABLE · INSERT</span><span class="ty">LAB</span></li>
+          <li><span class="k"></span><span>SELECT &amp; WHERE</span><span class="ty">LAB</span></li>
+          <li><span class="k"></span><span>Advanced Queries</span><span class="ty">LAB</span></li>
+          <li><span class="k fk">FK</span><span>chapters</span><span class="ty">→ CH1..CH3</span></li>
+        </ul>
+        <a class="open" href="Practical.html">افتح العملي ←</a>
+      </div>
+    </article>
+  </main>
+  <p class="empty mono" id="empty">0 rows returned</p>
+
+  <footer>
+    <p>Created by <b>Alaa Herzallah</b></p>
+    <div class="soc">
+      <a href="https://instagram.com/alaaherzallah05" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2Zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm5.2-3.2a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4Z"/></svg></a>
+      <a href="https://wa.me/962775725298" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.200Zm4.500-6.100c-.2-.1-1.500-.7-1.700-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.200-.3.200-.5.100-1.400-.7-2.400-1.300-3.300-2.900-.2-.3.200-.3.700-1.100.1-.2 0-.3 0-.5l-.8-1.800c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.100-.7.300-.7.700-1 1.500-.9 2.400.2 1.100.7 2.100 1.800 3.300 1.800 2 3.500 2.700 5 3 .8.200 1.600.100 2.200-.4.400-.4.700-1 .8-1.600 0-.2 0-.3-.1-.4l-.9-.5Z"/></svg></a>
+    </div>
+  </footer>
 </div>
 <script>
 (function(){
-  var q=document.getElementById('q'),cards=[].slice.call(document.querySelectorAll('.card')),
-      count=document.getElementById('count'),empty=document.getElementById('empty');
+  var r=document.documentElement,b=document.getElementById('theme');
+  function setTheme(t){r.setAttribute('data-theme',t);b.textContent=t==='dark'?'الوضع الفاتح':'الوضع الداكن';}
+  var saved=null;try{saved=localStorage.getItem('db-index-theme')}catch(e){}
+  setTheme(saved==='light'?'light':'dark');
+  b.addEventListener('click',function(){
+    var n=r.getAttribute('data-theme')==='dark'?'light':'dark';
+    setTheme(n);try{localStorage.setItem('db-index-theme',n)}catch(e){}
+  });
+  var q=document.getElementById('q'),cards=[].slice.call(document.querySelectorAll('.ent')),
+      rc=document.getElementById('rc'),empty=document.getElementById('empty');
   function run(){
-    var s=q.value.trim().toLowerCase(),n=0;
+    var s=q.value.trim().replace(/['%]/g,'').toLowerCase(),n=0;
     cards.forEach(function(c){
-      var lis=[].slice.call(c.querySelectorAll('li'));
+      var lis=[].slice.call(c.querySelectorAll('.rows li'));
       lis.forEach(function(l){l.classList.remove('hit')});
       var match=!s||c.textContent.toLowerCase().indexOf(s)>-1;
       if(s)lis.forEach(function(l){if(l.textContent.toLowerCase().indexOf(s)>-1)l.classList.add('hit')});
       c.style.display=match?'':'none';
       if(match)n++;
     });
-    count.textContent=n+' من '+cards.length+' ملفات';
+    rc.textContent=n+(n===1?' row returned':' rows returned');
     empty.style.display=n?'none':'block';
   }
   q.addEventListener('input',run);run();
-  var b=document.getElementById('theme'),r=document.documentElement;
-  b.addEventListener('click',function(){
-    var cur=r.getAttribute('data-theme');
-    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
-    r.setAttribute('data-theme',dark?'light':'dark');
-    b.textContent=dark?'الوضع الداكن':'الوضع الفاتح';
-  });
 })();
 </script>
 </body>
