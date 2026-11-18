@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Database Basics – ER Modeling Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0714;--p1:#130d22;--p2:#1a1230;--line:#2c2150;--a:#c4a7ff;--a2:#9b6bff;--ad:#5b3bb0;--t:#ece6fa;--m:#a99cc9;--bad:#ff7b9c;--ok:#7be0b0;
+box-sizing:border-box;color-scheme:dark;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(64px + env(safe-area-inset-top,0px))}
+body{margin:0;background:var(--bg);color:var(--t);font:17px/1.7 "IBM Plex Sans Arabic",Tahoma,system-ui,sans-serif;
+background-image:radial-gradient(rgba(196,167,255,.09) 1px,transparent 1px);background-size:26px 26px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:30}
+h1,h2,h3{margin:0;line-height:1.25}
+.mono,.tag{font-family:"JetBrains Mono",ui-monospace,monospace}
+.wrap{max-width:960px;margin:0 auto;padding:0 18px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(10,7,20,.93);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;gap:6px;overflow-x:auto;padding:10px 18px;scrollbar-width:none}
+nav a{color:var(--m);text-decoration:none;white-space:nowrap;padding:5px 13px;border-radius:99px;font-size:14px;border:1px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--a);border-color:var(--ad);outline:none}
+.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:28px;align-items:center;padding:52px 0 34px}
+.hero h1{font-size:clamp(32px,6vw,52px);color:var(--a);text-shadow:0 0 30px rgba(155,107,255,.45)}
+.hero p{color:var(--m);max-width:48ch}
+.tag{display:inline-block;font-size:12px;color:var(--a2);border:1px solid var(--ad);border-radius:6px;padding:2px 10px;margin-bottom:12px;direction:ltr}
+.btn{display:inline-block;background:var(--a2);color:#12081f;border:0;border-radius:9px;padding:10px 20px;margin:4px 0 4px 8px;cursor:pointer;font:600 15px "IBM Plex Sans Arabic",sans-serif;text-decoration:none}
+.btn.o{background:transparent;color:var(--a);border:1px solid var(--ad)}
+.btn:hover{box-shadow:0 0 18px rgba(155,107,255,.55)}
+.btn:focus-visible,.opt:focus-visible,summary:focus-visible,.chip:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+.db{display:grid;place-items:center}
+.db svg{width:min(260px,70vw);filter:drop-shadow(0 0 26px rgba(155,107,255,.5))}
+.db .r{animation:pl 2.4s infinite}.db .r:nth-of-type(2){animation-delay:.5s}.db .r:nth-of-type(3){animation-delay:1s}
+@keyframes pl{50%{opacity:.35}}
+section{padding:40px 0 6px}
+h2{font-size:clamp(25px,4vw,34px);color:var(--a)}
+.lead{color:var(--m);margin:4px 0 18px}
+.card{background:linear-gradient(160deg,var(--p1),var(--p2));border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:14px 0}
+.card h3{font-size:19px;color:var(--a);margin-bottom:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}.grid .card{margin:0}
+ul{margin:6px 0;padding:0 20px 0 0}li{margin:4px 0}
+b{color:var(--a)}
+.tip{border-right:3px solid var(--a2);background:rgba(155,107,255,.09);padding:10px 14px;border-radius:8px 0 0 8px;margin:12px 0;font-size:15.5px}
+.en{direction:ltr;unicode-bidi:isolate}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.chip{background:#120b22;color:var(--t);border:1px solid var(--ad);border-radius:99px;padding:6px 14px;cursor:pointer;font:500 14px "JetBrains Mono",monospace}
+.chip.on{background:var(--a2);color:#12081f;border-color:var(--a)}
+.out{min-height:64px}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:15px;direction:ltr;text-align:left}
+th,td{border:1px solid var(--line);padding:8px 12px;font-family:"JetBrains Mono",monospace;font-size:13.5px}
+th{background:#21153f;color:var(--a)}tr.hl td{background:rgba(155,107,255,.28);color:#fff}tbody tr{cursor:pointer}
+svg.er{width:100%;height:auto;direction:ltr;background:#0d081a;border:1px solid var(--line);border-radius:12px}
+.er text{font:600 11px "JetBrains Mono",monospace;fill:var(--t);text-anchor:middle}
+.er .n rect{fill:#1d1238;stroke:var(--a2);stroke-width:1.6}
+.er .e{stroke:var(--a2);stroke-width:1.8;fill:none}.er .lb rect{fill:#0d081a;stroke:var(--ad)}.er .lb text{fill:var(--a);font-size:10px}
+.er .cur .e{stroke:#fff;stroke-width:2.6}.er .cur .lb rect{fill:var(--a2)}.er .cur .lb text{fill:#12081f}
+.er .n,.er .ed{transition:opacity .4s}
+details{background:linear-gradient(160deg,var(--p1),var(--p2));border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+summary{cursor:pointer;padding:13px 18px;font-weight:600;color:var(--a);list-style:none}
+summary::before{content:"◂ ";color:var(--a2)}details[open] summary::before{content:"▾ "}
+details>div{padding:0 20px 14px}
+select{background:#120b22;color:var(--t);border:1px solid var(--ad);border-radius:8px;padding:7px 10px;font:600 15px "JetBrains Mono",monospace;margin:0 0 0 8px}
+#bar{height:8px;background:#150e29;border-radius:9px;overflow:hidden;margin:10px 0}
+#bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ad),var(--a));transition:width .4s}
+.q{background:linear-gradient(160deg,var(--p1),var(--p2));border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0}
+.q p{margin:0 0 10px;font-weight:600}.q small{color:var(--m);font-weight:400}
+.opt{display:block;width:100%;text-align:start;margin:6px 0;padding:10px 14px;border-radius:9px;border:1px solid var(--line);background:#0e0820;color:var(--t);font:inherit;cursor:pointer;transition:.2s}
+.opt:hover:not(:disabled){border-color:var(--a);background:#1a1033}
+.opt.ok{background:rgba(123,224,176,.18);border-color:var(--ok)}.opt.no{background:rgba(255,123,156,.16);border-color:var(--bad)}
+.opt:disabled{cursor:default}
+.fb{display:none;margin-top:8px;padding:10px 14px;border-radius:8px;font-size:15.5px}
+.fb.show{display:block}.fb.ok{background:rgba(123,224,176,.1);border-right:3px solid var(--ok)}.fb.no{background:rgba(255,123,156,.1);border-right:3px solid var(--bad)}
+#score{font:700 22px "JetBrains Mono",monospace;color:var(--a);direction:ltr;display:inline-block}
+footer{padding:36px 18px 60px;text-align:center;color:var(--m);font-size:14px}
+@media(max-width:760px){.hero{grid-template-columns:1fr;padding-top:30px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+
+#ar{display:none}body.ar #ar{display:block}body.ar #en{display:none}
+#en{font-family:"IBM Plex Sans","IBM Plex Sans Arabic",system-ui,sans-serif;font-size:16px}
+nav .btn{flex:none;margin:0 0 0 8px;padding:5px 16px;font-size:14px}#en nav .btn{margin:0 8px 0 0}
+#en .btn{margin:4px 8px 4px 0}#en ul{padding:0 0 0 20px}
+#en .tip{border-right:0;border-left:3px solid var(--a2);border-radius:0 8px 8px 0}
+#en .fb.ok,#en .fb.no{border-right:0}#en .fb.ok{border-left:3px solid var(--ok)}#en .fb.no{border-left:3px solid var(--bad)}
+#en summary::before{content:"▸ "}#en details[open] summary::before{content:"▾ "}#en .opt{text-align:left}
+</style>
+</head>
+<body>
+<div id="en" lang="en" dir="ltr">
+<nav><div class="wrap"><button class="btn o lang" type="button">العربية</button><a href="#e-rules">Business Rules</a><a href="#e-good">Good Rule</a><a href="#e-name">Naming</a><a href="#e-erd">Developing ERD</a><a href="#e-tc">Tiny College</a><a href="#e-card">Cardinality</a><a href="#e-sup">Supertype</a><a href="#e-sum">Summary</a><a href="#e-quiz">Quiz</a></div></nav>
+<header><div class="wrap hero"><div><span class="tag">DATABASE BASICS · CHAPTER 3</span><h1>Entity Relationship<br>Modeling</h1>
+<p>A complete, easy-to-follow study guide: every concept from the slides explained in plain English, with interactive demos (build the ERD step by step), a summary, and a quiz that tells you instantly if you are right or wrong.</p>
+<a class="btn" href="#e-rules">Start studying</a><a class="btn o" href="#e-quiz">Jump to quiz</a></div><div class="db" aria-hidden="true"><svg viewBox="0 0 200 220"><g fill="#1d1238" stroke="#c4a7ff" stroke-width="3"><path d="M30 50v120c0 18 32 30 70 30s70-12 70-30V50"/><ellipse cx="100" cy="50" rx="70" ry="24"/></g><g fill="none" stroke="#9b6bff" stroke-width="3"><path class="r" d="M30 95c0 14 32 26 70 26s70-12 70-26"/><path class="r" d="M30 140c0 14 32 26 70 26s70-12 70-26"/></g><text x="100" y="58" text-anchor="middle" fill="#c4a7ff" font-family="monospace" font-weight="700" font-size="16">ER</text></svg></div></div></header>
+<main>
+<section id="e-rules"><div class="wrap"><h2>1. Business Rules</h2><p class="lead">The starting point of any database design.</p>
+<div class="card"><h3>Definition</h3>A <b>business rule</b> is a statement that <b>defines or constrains some aspect of the business</b>. It asserts business structure or controls and influences the behavior of the business.
+<ul><li>Derived from <b>policies, procedures, events, functions</b> and other business objects.</li><li>States <b>constraints</b> on the organization.</li><li>Governs <b>how data are handled and stored</b>.</li></ul>
+<div class="tip"><b>Data Modeling</b> = documenting the organizational rules that govern data.</div></div>
+<div class="card"><h3>Interactive: from policy to database constraint</h3>Click a policy to see what it forces on the data:
+<div class="chips" id="e-pol"></div><div class="tip out" id="e-pout">Pick a policy above.</div></div>
+<div class="card"><h3>Gathering business rules</h3><ul><li>From descriptions of <b>functions, events, policies, stakeholders</b></li><li><b>Interview notes</b></li><li><b>Organizational documents</b> (personnel manuals, contracts, marketing brochures)</li></ul></div></div></section>
+<section id="e-good"><div class="wrap"><h2>2. A Good Business Rule</h2><p class="lead">Tap each characteristic to see what it means.</p>
+<div class="card"><div class="chips" id="e-gc"></div><div class="tip out" id="e-gout">Pick a characteristic.</div></div></div></section>
+<section id="e-name"><div class="wrap"><h2>3. Data Names &amp; Definitions</h2><p class="lead">Guidelines for naming data objects.</p>
+<div class="card"><ul><li><b>1.</b> Relate to business</li><li><b>2.</b> Meaningful</li><li><b>3.</b> Unique</li><li><b>4.</b> Readable</li><li><b>5.</b> Taken from approved list</li></ul>
+<div class="tip">A good name reflects the business, has meaning, is not duplicated, is readable, and comes from an approved list.</div></div></div></section>
+<section id="e-erd"><div class="wrap"><h2>4. Developing an E-R Diagram</h2><p class="lead">How do we build an ERD?</p>
+<div class="grid"><div class="card"><h3>An iterative process</h3>Database design is <b>iterative</b> rather than linear or sequential.</div>
+<div class="card"><h3>Where it starts</h3>Usually with a general narrative of the organization’s <b>operations and procedures</b>.</div>
+<div class="card"><h3>Draw and review</h3>The basic E-R model is <b>graphically</b> depicted and presented for review.</div>
+<div class="card"><h3>When to stop</h3>Repeat <b>until end users and designers agree</b> the ERD is a fair representation of the organization’s activities and functions.</div></div></div></section>
+<section id="e-tc"><div class="wrap"><h2>5. Tiny College Database</h2><p class="lead">Build the full ERD relationship by relationship. Press Next, or click any row in the table (Table 4.2).</p>
+<div class="card"><svg class="er" id="e-erd-svg" viewBox="0 0 720 360" role="img" aria-label="Tiny College ERD"></svg><div class="tip" id="e-step-note"></div>
+<button class="btn" id="e-nx">Next ▸</button><button class="btn o" id="e-pv">◂ Prev</button><button class="btn o" id="e-all">Show all</button><button class="btn o" id="e-rs">Reset</button></div>
+<div class="card scroll"><h3>Components of the E-R Model</h3><table><thead><tr><th>ENTITY</th><th>RELATIONSHIP</th><th>CONNECTIVITY</th><th>ENTITY</th></tr></thead><tbody id="e-tb"></tbody></table>
+<div class="tip">The eight entities: <b>SCHOOL, DEPARTMENT, EMPLOYEE, PROFESSOR, COURSE, CLASS, ENROLL (composite entity), STUDENT</b>. <b>ENROLL</b> is the composite entity that implements the M:N relationship between STUDENT and CLASS.</div></div>
+<div class="card"><h3>Business rules behind the diagram</h3>
+<details><summary>SCHOOL ↔ DEPARTMENT ↔ COURSE ↔ CLASS</summary><div>Tiny College is divided into several schools, each administered by a Dean (1:1 between DEAN and SCHOOL). A school has at least one and at most N departments; each department belongs to a single school. A department offers several courses (unless it is “Research only”). A course can generate several classes (1:M), and CLASS is optional to COURSE.</div></details>
+<details><summary>PROFESSOR</summary><div>A department has many professors, and only one of them <b>chairs</b> it (1:1); DEPARTMENT is optional to PROFESSOR in “chairs”. A professor teaches up to <b>4 classes</b>, or none (research contract). An advisor is a professor, but not all professors advise students.</div></details>
+<details><summary>STUDENT</summary><div>A student may enroll in several classes but takes each class only once per period: up to <b>6 classes</b> per student and up to <b>35 students</b> per class. Each student has one major tied to a single department, and an advisor in his or her department; an advisor counsels several students.</div></details>
+<details><summary>Administrators &amp; Employees</summary><div>A dean is a member of the administrators group (ADMINISTRATOR) and also holds professorial rank, so may teach. Administrators and professors are also Employees.</div></details></div></div></section>
+<section id="e-card"><div class="wrap"><h2>6. Cardinality (min, max)</h2><p class="lead">How to read the numbers in parentheses.</p>
+<div class="card"><div class="mono">PROFESSOR — teaches — CLASS</div><br>Min <select id="e-mn"><option>0</option><option>1</option></select> Max <select id="e-mx"><option>1</option><option>4</option><option>6</option><option>35</option><option>N</option></select><div class="tip" id="e-cout"></div></div></div></section>
+<section id="e-sup"><div class="wrap"><h2>7. Supertype / Subtype</h2><p class="lead">When one entity is a special kind of another.</p>
+<div class="grid"><div class="card"><h3>The example</h3><b>EMPLOYEE</b> is the supertype; <b>PROFESSOR</b> and <b>ADMINISTRATOR</b> are subtypes (“is a” relationship). Every professor is an employee, but not every employee is a professor (0,1).</div>
+<div class="card"><h3>Notation</h3>Drawn two ways: the <b>Chen model</b> (diamond with “is a”) and the <b>Crow’s Foot model</b> (PK/FK tables, where the subtype’s PK is also an FK to the supertype).</div></div></div></section>
+<section id="e-sum"><div class="wrap"><h2>8. Chapter Summary</h2><p class="lead">Review this right before the exam.</p>
+<div class="card"><ul><li><b>Business rule</b>: a statement that constrains some aspect of the business and governs data; documenting them = Data Modeling.</li>
+<li>A good rule is <b>Declarative, Precise, Atomic, Consistent, Expressible, Distinct, Business-oriented</b>.</li>
+<li>Names: relate to business, meaningful, unique, readable, from an approved list.</li>
+<li>The ERD is built <b>iteratively</b> until users and designers agree.</li>
+<li>Tiny College has <b>8 entities</b>; ENROLL is the composite entity for an M:N relationship.</li>
+<li><b>(min,max)</b>: min=0 is optional, min=1 is mandatory.</li>
+<li><b>Supertype/Subtype</b>: an “is a” relationship such as EMPLOYEE → PROFESSOR.</li></ul></div></div></section>
+<section id="e-quiz"><div class="wrap"><h2>9. Interactive Quiz</h2><p class="lead">Tap an answer. Green means correct, red means wrong, and the right answer is always explained.</p>
+<div class="card"><span id="e-score">Score: 0 / 0</span> <span style="color:var(--m)" id="e-prog"></span><div id="e-bar"><i></i></div><button class="btn" id="e-shuf">Shuffle &amp; restart</button><button class="btn o" id="e-rst">Restart</button></div>
+<div id="e-qs"></div><div class="card" id="e-final" style="display:none"></div></div></section>
+</main><footer>Based on the slides of Chapter 3 Part 1: Entity Relationship Modeling · Database Basics</footer></div>
+<div id="ar" lang="ar" dir="rtl"><nav><div class="wrap"><button class="btn o lang" type="button">English</button><a href="#a-rules">Business Rules</a><a href="#a-good">Good Rule</a><a href="#a-name">Naming</a><a href="#a-erd">Developing ERD</a><a href="#a-tc">Tiny College</a><a href="#a-card">Cardinality</a><a href="#a-sup">Supertype</a><a href="#a-sum">الملخص</a><a href="#a-quiz">الاختبار</a></div></nav><header><div class="wrap hero">
+<div><span class="tag">DATABASE BASICS · CHAPTER 3</span>
+<h1>Entity Relationship<br>Modeling</h1>
+<p>دليل دراسة شامل وسهل: كل مفهوم من شرائح الشابتر مشروح بالبسيط، مع تجارب تفاعلية (بناء ERD خطوة بخطوة) وملخص واختبار يعطيك النتيجة فوراً.</p>
+<a class="btn" href="#a-rules">ابدأ الدراسة</a><a class="btn o" href="#a-quiz">روح للاختبار</a></div>
+<div class="db" aria-hidden="true"><svg viewBox="0 0 200 220"><g fill="#1d1238" stroke="#c4a7ff" stroke-width="3"><path d="M30 50v120c0 18 32 30 70 30s70-12 70-30V50"/><ellipse cx="100" cy="50" rx="70" ry="24"/></g><g fill="none" stroke="#9b6bff" stroke-width="3"><path class="r" d="M30 95c0 14 32 26 70 26s70-12 70-26"/><path class="r" d="M30 140c0 14 32 26 70 26s70-12 70-26"/></g><text x="100" y="58" text-anchor="middle" fill="#c4a7ff" font-family="monospace" font-weight="700" font-size="16">ER</text></svg></div>
+</div></header><main>
+<section id="a-rules"><div class="wrap">
+<h2>1. Business Rules</h2><p class="lead">نقطة البداية لأي تصميم قاعدة بيانات.</p>
+<div class="card"><h3>التعريف</h3>الـ <b>Business Rule</b> هو جملة <b>تحدد أو تقيّد جانباً من العمل</b>، هدفها فرض هيكلية العمل أو التحكم بسلوك المنظمة والتأثير عليه.
+<ul><li>تُشتق من: <b class="en">policies, procedures, events, functions</b> وكائنات العمل الأخرى.</li><li>تضع <b>قيوداً (constraints)</b> على المنظمة.</li><li>تحكم <b>كيف تُعالج وتُخزَّن</b> البيانات.</li></ul>
+<div class="tip"><b>Data Modeling</b> = توثيق قواعد المنظمة التي تحكم البيانات.</div></div>
+<div class="card"><h3>تجربة: من Policy إلى قيد في قاعدة البيانات</h3>اضغط على سياسة وشوف شو بتفرض على البيانات:
+<div class="chips" id="a-pol"></div><div class="tip out" id="a-pout">اختر سياسة من فوق.</div></div>
+<div class="card"><h3>كيف نجمع الـ Business Rules؟</h3><ul><li>من وصف <b>functions, events, policies, stakeholders</b></li><li>من ملاحظات المقابلات (<b>interview notes</b>)</li><li>من وثائق المنظمة (<b>personnel manuals, contracts, marketing brochures</b>)</li></ul></div>
+</div></section>
+
+<section id="a-good"><div class="wrap">
+<h2>2. A Good Business Rule</h2><p class="lead">اضغط على كل صفة لتشوف معناها.</p>
+<div class="card"><div class="chips" id="a-gc"></div><div class="tip out" id="a-gout">اختر صفة.</div></div>
+</div></section>
+
+<section id="a-name"><div class="wrap">
+<h2>3. Data Names &amp; Definitions</h2><p class="lead">إرشادات تسمية الكائنات (data objects).</p>
+<div class="card"><ul class="en" style="direction:ltr"><li><b>1.</b> Relate to business</li><li><b>2.</b> Meaningful</li><li><b>3.</b> Unique</li><li><b>4.</b> Readable</li><li><b>5.</b> Taken from approved list</li></ul>
+<div class="tip">يعني الاسم لازم يعبّر عن العمل، له معنى، غير مكرر، مقروء، ومأخوذ من قائمة معتمدة.</div></div>
+</div></section>
+
+<section id="a-erd"><div class="wrap">
+<h2>4. Developing an E-R Diagram</h2><p class="lead">كيف نبني الـ ERD؟</p>
+<div class="grid">
+<div class="card"><h3>عملية تكرارية</h3>تصميم قاعدة البيانات <b>iterative</b> وليس خطياً أو متسلسلاً.</div>
+<div class="card"><h3>نقطة البداية</h3>عادةً بوصف عام لـ <b>operations and procedures</b> الخاصة بالمنظمة.</div>
+<div class="card"><h3>رسم ومراجعة</h3>يُرسم نموذج E-R الأساسي <b>graphically</b> ويُعرض للمراجعة.</div>
+<div class="card"><h3>متى نتوقف؟</h3>نكرر لين يتفق <b>المستخدمون والمصممون</b> إن الـ ERD يمثل أنشطة المنظمة بشكل عادل.</div></div>
+</div></section>
+
+<section id="a-tc"><div class="wrap">
+<h2>5. Tiny College Database</h2><p class="lead">ابنِ الـ ERD الكامل علاقة علاقة. اضغط Next أو اضغط على أي صف في الجدول (Table 4.2).</p>
+<div class="card"><svg class="er" id="a-erd-svg" viewBox="0 0 720 360" role="img" aria-label="Tiny College ERD"></svg>
+<div class="tip" id="a-step-note">اضغط Next لتبدأ.</div>
+<button class="btn" id="a-nx">Next ◂</button><button class="btn o" id="a-pv">▸ Prev</button><button class="btn o" id="a-all">أظهر الكل</button><button class="btn o" id="a-rs">Reset</button></div>
+<div class="card scroll"><h3>Components of the E-R Model</h3><table><thead><tr><th>ENTITY</th><th>RELATIONSHIP</th><th>CONNECTIVITY</th><th>ENTITY</th></tr></thead><tbody id="a-tb"></tbody></table>
+<div class="tip">الكيانات الثمانية: <b class="en">SCHOOL, DEPARTMENT, EMPLOYEE, PROFESSOR, COURSE, CLASS, ENROLL (composite entity), STUDENT</b>. وـ <b>ENROLL</b> هو الـ composite entity اللي بحقق علاقة M:N بين STUDENT وCLASS.</div></div>
+<div class="card"><h3>قواعد العمل خلف الرسم</h3>
+<details><summary>SCHOOL ↔ DEPARTMENT ↔ COURSE ↔ CLASS</summary><div>الكلية مقسمة لعدة schools، لكل school عميد (1:1 بين DEAN وSCHOOL). كل school فيها قسم واحد على الأقل وعدد غير محدد (N) من الأقسام، وكل قسم يتبع school واحدة. القسم يقدم عدة courses (إلا إذا كان “Research only” فما بقدم). الـ course ممكن تتولد منها عدة classes (1:M)، والـ CLASS اختيارية بالنسبة للـ COURSE.</div></details>
+<details><summary>PROFESSOR</summary><div>القسم فيه أساتذة كثر، وواحد منهم فقط يرأسه (<b>chairs</b>، 1:1) والقسم اختياري للأستاذ في هالعلاقة. الأستاذ يدرّس حتى <b>4 classes</b> أو ولا واحد (research contract). والمرشد (advisor) هو أستاذ، بس مش كل الأساتذة مرشدين.</div></details>
+<details><summary>STUDENT</summary><div>الطالب يسجل بعدة classes لكن مرة وحدة بالفترة. حتى <b>6 classes</b> للطالب وحتى <b>35 طالب</b> بالـ class. كل طالب له major واحد مرتبط بقسم واحد، ولكل طالب advisor بقسمه، والمرشد يرشد عدة طلاب.</div></details>
+<details><summary>Administrators &amp; Employees</summary><div>العميد عضو بمجموعة الإداريين (ADMINISTRATOR) وبحمل رتبة أستاذ وممكن يدرّس. الإداريون والأساتذة هم كمان Employees.</div></details></div>
+</div></section>
+
+<section id="a-card"><div class="wrap">
+<h2>6. Cardinality (min, max)</h2><p class="lead">كيف تقرأ الأرقام اللي بين القوسين؟</p>
+<div class="card"><div class="mono en" style="direction:ltr">PROFESSOR — teaches — CLASS</div><br>
+Min <select id="a-mn"><option>0</option><option>1</option></select> Max <select id="a-mx"><option>1</option><option>4</option><option>6</option><option>35</option><option>N</option></select>
+<div class="tip" id="a-cout"></div></div>
+</div></section>
+
+<section id="a-sup"><div class="wrap">
+<h2>7. Supertype / Subtype</h2><p class="lead">لما كيان يكون نوعاً خاصاً من كيان آخر.</p>
+<div class="grid"><div class="card"><h3>المثال</h3><b>EMPLOYEE</b> = supertype، و<b>PROFESSOR</b> وـ<b>ADMINISTRATOR</b> = subtypes. علاقة “is a”: كل أستاذ هو موظف، لكن مش كل موظف أستاذ (0,1).</div>
+<div class="card"><h3>طريقة الرسم</h3>بتنرسم بنموذجين: <b>Chen model</b> (معين + “is a”) و<b>Crow’s Foot</b> (جداول PK/FK، والـ PK للـ subtype هو نفسه FK للـ supertype).</div></div>
+</div></section>
+
+<section id="a-sum"><div class="wrap">
+<h2>8. ملخص الشابتر</h2><p class="lead">راجعه قبل الامتحان مباشرة.</p>
+<div class="card"><ul>
+<li><b>Business rule</b>: جملة تقيّد جانباً من العمل وتحكم البيانات؛ وتوثيقها = Data Modeling.</li>
+<li>القاعدة الجيدة: <b class="en">Declarative, Precise, Atomic, Consistent, Expressible, Distinct, Business-oriented</b>.</li>
+<li>التسمية: مرتبطة بالعمل، ذات معنى، فريدة، مقروءة، من قائمة معتمدة.</li>
+<li>الـ ERD يُبنى بشكل <b>iterative</b> حتى يتفق المستخدمون والمصممون.</li>
+<li>Tiny College فيها <b>8 كيانات</b>، وـ ENROLL هو composite entity لعلاقة M:N.</li>
+<li>الـ <b>(min,max)</b>: min=0 اختياري، min=1 إلزامي.</li>
+<li><b>Supertype/Subtype</b>: علاقة “is a” مثل EMPLOYEE ← PROFESSOR.</li></ul></div>
+</div></section>
+
+<section id="a-quiz"><div class="wrap">
+<h2>9. الاختبار التفاعلي</h2><p class="lead">اضغط على إجابة. الأخضر صح، الأحمر غلط، ويظهر الشرح دائماً.</p>
+<div class="card"><span id="a-score">Score: 0 / 0</span> <span style="color:var(--m)" id="a-prog"></span><div id="a-bar"><i></i></div>
+<button class="btn" id="a-shuf">خلط وإعادة</button><button class="btn o" id="a-rst">إعادة</button></div>
+<div id="a-qs"></div><div class="card" id="a-final" style="display:none"></div>
+</div></section>
+</main><footer>مبني على شرائح Chapter 3 Part 1: Entity Relationship Modeling · Database Basics</footer></div>
+<script>
+(function(){
+var $=function(s){return document.querySelector(s)};
+var POL_A=[["Every student must have a faculty advisor","كل سجل طالب لازم يرتبط بمرشد: عمود <b>advisor_id</b> إلزامي (NOT NULL) + FOREIGN KEY."],["Customers must be under the care of one salesperson","علاقة 1:M: كل عميل له <b>salesperson واحد</b> فقط، والبائع ممكن يخدم عدة عملاء."],["Each product must be labeled with product code","كل منتج لازم له <b>product_code</b> فريد وإلزامي (PRIMARY KEY)."]],GD_A=[["Declarative","تقول <b>what</b> (شو المطلوب) مش how (كيف)."],["Precise","واضحة ومعناها متفق عليه."],["Atomic","جملة واحدة (one statement) فقط."],["Consistent","متسقة داخلياً وخارجياً."],["Expressible","قابلة للتعبير بلغة منظمة وطبيعية."],["Distinct","غير مكررة (non-redundant)."],["Business-oriented","يفهمها الناس بالعمل مش التقنيين فقط."]],Q_A=[
+["ما هو الـ Business Rule؟",["جملة تحدد أو تقيّد جانباً من العمل وتتحكم بسلوك المنظمة","نوع من أنواع الحواسيب","أمر لحذف الجداول","برنامج لرسم الصور"],"هو statement يحدد أو يقيّد جانباً من العمل."],
+["الـ Business Rules تُشتق من…",["policies, procedures, events, functions","ألوان الشاشة فقط","سرعة المعالج","نظام التشغيل"],"تشتق من السياسات والإجراءات والأحداث والوظائف."],
+["توثيق قواعد المنظمة التي تحكم البيانات يسمى…",["Data Modeling","Debugging","Compiling","Formatting"],"Documenting organizational rules that govern data = Data Modeling."],
+["سياسة “كل طالب لازم له faculty advisor” تفرض أن…",["بيانات كل طالب ترتبط بمرشد","الطالب يدرّس classes","المرشد يحذف الطالب","القسم بلا طلاب"],"السياسة تجبر البيانات على ربط كل طالب بمرشد."],
+["أي مما يلي مصدر لجمع business rules؟",["Interview notes ووثائق المنظمة","تخمين المصمم","أسعار الأجهزة","لا شيء"],"المصادر: وصف الوظائف، المقابلات، ووثائق المنظمة."],
+["صفة Declarative تعني…",["تقول what وليس how","تقول how فقط","تكون جملتين","تكون سرية"],"Declarative: what, not how."],
+["صفة Atomic تعني…",["جملة واحدة (one statement)","جملة طويلة جداً","قاعدة مكررة","قاعدة بدون معنى"],"Atomic: one statement."],
+["صفة Distinct تعني…",["غير مكررة (non-redundant)","مكررة","معقدة","سرية"],"Distinct: non-redundant."],
+["أي مما يلي ليس من إرشادات تسمية الكائنات؟",["الاسم يكون مبهماً وطويلاً","Relate to business","Unique","Readable"],"الاسم لازم يكون meaningful وواضح."],
+["عملية تصميم قاعدة البيانات هي…",["Iterative (تكرارية)","خطية فقط","عشوائية","تتم مرة واحدة"],"Iterative rather than linear or sequential."],
+["نكرر بناء الـ ERD حتى…",["يتفق المستخدمون والمصممون أنه يمثل المنظمة","ينتهي الحبر","يصير عدد الكيانات 100","يرفض المدير"],"تتكرر العملية حتى اتفاق المستخدمين والمصممين."],
+["العلاقة بين DEAN وSCHOOL هي…",["1:1","M:N","1:M","لا توجد علاقة"],"A 1:1 relationship exists between DEAN and SCHOOL."],
+["في علاقة EMPLOYEE وPROFESSOR، الـ supertype هو…",["EMPLOYEE","PROFESSOR","CLASS","SCHOOL"],"كل أستاذ هو موظف؛ فـ EMPLOYEE supertype."],
+["الرقم (0,4) في PROFESSOR teaches CLASS يعني…",["الأستاذ يدرّس من 0 إلى 4 classes","الأستاذ يدرّس 4 فقط","الأستاذ يدرّس 0 فقط","غير محدود"],"قد يدرّس حتى 4 classes أو ولا واحد (research contract)."],
+["العلاقة بين COURSE وCLASS هي…",["1:M","1:1","M:N","M:1"],"COURSE generates CLASS, 1:M."],
+["علاقة STUDENT enrolls in CLASS من نوع…",["M:N وتتحقق بـ ENROLL","1:1","1:M فقط","M:1 فقط"],"ENROLL هو composite entity يحقق M:N."],
+["أقصى عدد classes للطالب وأقصى عدد طلاب بالـ class هما…",["6 و35","35 و6","4 و6","1 و1"],"كل طالب حتى 6 classes، وكل class حتى 35 طالب."],
+["القسم المصنف “Research only”…",["لا يقدم courses","يقدم كل الـ courses","لا يملك أساتذة","يُحذف"],"إذا كان Research only فلن يقدم courses."],
+["علاقة PROFESSOR chairs DEPARTMENT هي…",["1:1","1:M","M:N","M:1"],"أستاذ واحد فقط يرأس القسم."],
+["كم عدد الكيانات (entities) في Tiny College؟",["8","4","12","3"],"SCHOOL, DEPARTMENT, EMPLOYEE, PROFESSOR, COURSE, CLASS, ENROLL, STUDENT."],
+["Min = 0 في الـ cardinality تعني…",["مشاركة اختيارية (optional)","مشاركة إلزامية","خطأ","علاقة 1:1"],"0 = optional، و1 = mandatory."]];
+var R=[["SCHOOL","operates","1:M","DEPARTMENT",0,"الـ school تضم عدة أقسام، والقسم يتبع school وحدة."],
+["DEPARTMENT","has","1:M","STUDENT",0,"القسم عنده عدة طلاب major تبعهم بيقدمه هالقسم."],
+["DEPARTMENT","offers","1:M","COURSE",0,"القسم يقدم عدة courses (إلا Research only)."],
+["COURSE","generates","1:M","CLASS",0,"الـ course ممكن تنفتح منها عدة classes (sections)."],
+["PROFESSOR","is an","1:1","EMPLOYEE",0,"الأستاذ هو موظف (supertype/subtype)."],
+["PROFESSOR","is dean of","1:1","SCHOOL",0,"أستاذ واحد يكون عميد school واحدة."],
+["PROFESSOR","chairs","1:1","DEPARTMENT",0,"أستاذ واحد فقط يرأس القسم."],
+["PROFESSOR","teaches","1:M","CLASS",0,"الأستاذ يدرّس حتى 4 classes، أو ولا واحد."],
+["PROFESSOR","advises","1:M","STUDENT",[350,170],"المرشد أستاذ يرشد عدة طلاب."],
+["PROFESSOR","is assigned to","M:1","DEPARTMENT",[230,200],"أساتذة كثر معيّنون على قسم واحد."],
+["STUDENT","enrolls in","M:N","CLASS",0,"M:N! بتتحقق عبر الـ composite entity اسمه ENROLL."]];
+var N={SCHOOL:[350,36],DEPARTMENT:[350,130],COURSE:[350,224],CLASS:[350,318],PROFESSOR:[110,130],EMPLOYEE:[110,36],STUDENT:[610,224]};
+var POL_E=[["Every student must have a faculty advisor","Every student record must link to an advisor: a mandatory <b>advisor_id</b> column (NOT NULL) + FOREIGN KEY."],["Customers must be under the care of one salesperson","A 1:M relationship: each customer has exactly <b>one salesperson</b>, while a salesperson can serve many customers."],["Each product must be labeled with product code","Every product needs a unique, mandatory <b>product_code</b> (PRIMARY KEY)."]];
+var GD_E=[["Declarative","says <b>what</b> is required, not how."],["Precise","clear, with an agreed-upon meaning."],["Atomic","one statement only."],["Consistent","consistent internally and externally."],["Expressible","can be stated in structured and natural language."],["Distinct","non-redundant."],["Business-oriented","understood by business people, not only technical staff."]];
+var N_E=["A school contains several departments; each department belongs to one school.","A department has many students whose major it offers.","A department offers several courses (unless “Research only”).","A course can generate several classes (sections).","A professor is also an employee (supertype/subtype).","One professor serves as dean of one school.","Only one professor chairs a department.","A professor teaches up to 4 classes, or none.","An advisor is a professor who counsels several students.","Many professors are assigned to one department.","M:N! It is implemented through the composite entity ENROLL."];
+var Q_E=[
+["What is a business rule?",["A statement that defines or constrains some aspect of the business","A type of computer","A command that drops tables","A drawing program"],"It is a statement that defines or constrains some aspect of the business."],
+["Business rules are derived from…",["Policies, procedures, events, functions","Screen colors only","CPU speed","The operating system"],"They derive from policies, procedures, events, functions and other business objects."],
+["Documenting organizational rules that govern data is called…",["Data Modeling","Debugging","Compiling","Formatting"],"Documenting organizational rules that govern data = Data Modeling."],
+["The policy “every student must have a faculty advisor” forces…",["Each student’s data to be associated with an advisor","Students to teach classes","Advisors to delete students","Departments without students"],"The policy forces each student’s data to be associated with some advisor."],
+["Which is a source for gathering business rules?",["Interview notes and organizational documents","Designer’s guesses","Hardware prices","None"],"Sources: descriptions of functions, interviews, and organizational documents."],
+["A Declarative rule states…",["What, not how","How only","Two statements","A secret"],"Declarative: what, not how."],
+["An Atomic rule is…",["One statement","A very long statement","A duplicated rule","A rule without meaning"],"Atomic: one statement."],
+["A Distinct rule is…",["Non-redundant","Redundant","Complex","Secret"],"Distinct: non-redundant."],
+["Which is NOT a data-naming guideline?",["Names should be vague and long","Relate to business","Unique","Readable"],"Names must be meaningful and clear."],
+["Database design is…",["Iterative","Strictly linear","Random","Done once"],"Iterative rather than linear or sequential."],
+["We repeat building the ERD until…",["Users and designers agree it represents the organization","The ink runs out","There are 100 entities","The manager refuses"],"The process repeats until end users and designers agree."],
+["The relationship between DEAN and SCHOOL is…",["1:1","M:N","1:M","None"],"A 1:1 relationship exists between DEAN and SCHOOL."],
+["In EMPLOYEE and PROFESSOR, the supertype is…",["EMPLOYEE","PROFESSOR","CLASS","SCHOOL"],"Every professor is an employee, so EMPLOYEE is the supertype."],
+["(0,4) in PROFESSOR teaches CLASS means…",["A professor teaches from 0 to 4 classes","Exactly 4 classes","Exactly 0 classes","Unlimited"],"A professor may teach up to 4 classes, or none (research contract)."],
+["The relationship between COURSE and CLASS is…",["1:M","1:1","M:N","M:1"],"COURSE generates CLASS, 1:M."],
+["STUDENT enrolls in CLASS is…",["M:N, implemented by ENROLL","1:1","1:M only","M:1 only"],"ENROLL is the composite entity implementing M:N."],
+["Max classes per student and max students per class are…",["6 and 35","35 and 6","4 and 6","1 and 1"],"Up to 6 classes per student; up to 35 students per class."],
+["A department classified as “Research only”…",["Offers no courses","Offers all courses","Has no professors","Is deleted"],"A Research-only department will not offer courses."],
+["PROFESSOR chairs DEPARTMENT is…",["1:1","1:M","M:N","M:1"],"Only one professor can chair a department."],
+["How many entities are in Tiny College?",["8","4","12","3"],"SCHOOL, DEPARTMENT, EMPLOYEE, PROFESSOR, COURSE, CLASS, ENROLL, STUDENT."]
+,["Min = 0 in cardinality means…",["Optional participation","Mandatory participation","An error","A 1:1 relationship"],"0 = optional, 1 = mandatory."]];
+var LA={POL:POL_A,GD:GD_A,n:null,Q:Q_A,start:"اضغط Next لتبدأ.",qn:function(n,t){return "السؤال "+n+" من "+t},ok:"صح ✓",no:"غلط ✗",ra:"الإجابة الصحيحة: ",of:function(n,t){return " · "+n+" من "+t},sc:"Score: ",
+fin:function(ok,t,pc){return "<h3>انتهيت! "+ok+" / "+t+" ("+pc+"%)</h3>"+(pc>=85?"عمل ممتاز، أنت جاهز للامتحان.":pc>=60?"كويس. راجع الأقسام اللي أخطأت فيها وأعد المحاولة.":"ارجع للدليل والملخص ثم اخلط الأسئلة وجرّب مرة ثانية.")},
+c:function(mn,mx){return "<b class='mono en'>("+mn+","+mx+")</b><br>"+(mn?"المشاركة <b>إلزامية</b> (mandatory): لازم يوجد على الأقل واحد.":"المشاركة <b>اختيارية</b> (optional): ممكن ولا واحد.")+" وبحد أقصى "+(mx=="N"?"عدد غير محدد (N)":mx)+" من الـ CLASS."+(+mx<mn?" ⚠ الحد الأقصى لازم ≥ الأدنى.":"")+(mn==0&&mx=="4"?" ← هاي نفس (0,4) بالشريحة: الأستاذ يدرّس حتى 4 classes أو ولا واحد.":"")}};
+var LE={POL:POL_E,GD:GD_E,n:N_E,Q:Q_E,start:"Press Next to begin.",qn:function(n,t){return "Question "+n+" of "+t},ok:"Correct ✓",no:"Wrong ✗",ra:"The right answer is ",of:function(n,t){return " · "+n+" of "+t+" answered"},sc:"Score: ",
+fin:function(ok,t,pc){return "<h3>Finished! "+ok+" / "+t+" ("+pc+"%)</h3>"+(pc>=85?"Excellent work, you are ready for the exam.":pc>=60?"Good job. Review the sections you missed, then try again.":"Re-read the guide and the summary, then shuffle and try again.")},
+c:function(mn,mx){return "<b class='mono en'>("+mn+","+mx+")</b><br>"+(mn?"<b>Mandatory</b> participation: at least one must exist.":"<b>Optional</b> participation: there can be none.")+" At most "+(mx=="N"?"an unlimited number (N)":mx)+" CLASS record(s)."+(+mx<mn?" ⚠ Max must be ≥ min.":"")+(mn==0&&mx=="4"?" ← This is the (0,4) from the slide: a professor teaches up to 4 classes or none.":"")}};
+function sh(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+function mid(a,b,c){return c?[.25*a[0]+.5*c[0]+.25*b[0],.25*a[1]+.5*c[1]+.25*b[1]]:[(a[0]+b[0])/2,(a[1]+b[1])/2]}
+function setup(p,L,ar){
+var g=function(x){return $("#"+p+x)},qa=function(x){return document.querySelectorAll("#"+p+x)};
+function chips(arr,box,out,lab){arr.forEach(function(q,i){var b=document.createElement("button");b.className="chip";b.textContent=lab(q,i);b.onclick=function(){qa(box+" .chip").forEach(function(c){c.classList.remove("on")});b.classList.add("on");g(out).innerHTML=(box=="pol"?"<b class='en'>“"+q[0]+"”</b><br>"+q[1]:"<b class='en'>"+q[0]+"</b>: "+q[1])};g(box).appendChild(b)})}
+chips(L.POL,"pol","pout",function(q,i){return "Policy "+(i+1)});chips(L.GD,"gc","gout",function(q){return q[0]});
+var k=-1,sv=g("erd-svg");
+function draw(){var s="",used={};
+R.forEach(function(r,i){if(i>k)return;var a=N[r[0]],b=N[r[3]],c=r[4],m=mid(a,b,c);used[r[0]]=used[r[3]]=1;
+s+="<g class='ed"+(i==k?" cur":"")+"'><path class='e' d='M"+a+(c?" Q"+c:" L")+" "+b+"'/><g class='lb'><rect x='"+(m[0]-46)+"' y='"+(m[1]-13)+"' width='92' height='26' rx='13'/><text x='"+m[0]+"' y='"+(m[1]-1)+"'>"+r[1]+"</text><text x='"+m[0]+"' y='"+(m[1]+9)+"'>"+r[2]+"</text></g></g>"});
+Object.keys(used).forEach(function(n){var q=N[n];s+="<g class='n'><rect x='"+(q[0]-58)+"' y='"+(q[1]-16)+"' width='116' height='32' rx='6'/><text x='"+q[0]+"' y='"+(q[1]+4)+"'>"+n+"</text></g>"});
+sv.innerHTML=s;
+g("step-note").innerHTML=k<0?L.start:"<b>"+(k+1)+"/"+R.length+" · <span class='en'>"+R[k][0]+" "+R[k][1]+" "+R[k][3]+" ("+R[k][2]+")</span></b><br>"+(L.n?L.n[k]:R[k][5]);
+qa("tb tr").forEach(function(t,i){t.classList.toggle("hl",i==k)})}
+R.forEach(function(r,i){var t=document.createElement("tr");t.innerHTML="<td>"+r[0]+"</td><td>"+r[1]+"</td><td>"+r[2]+"</td><td>"+r[3]+"</td>";t.onclick=function(){k=i;draw()};g("tb").appendChild(t)});
+g("nx").onclick=function(){k=Math.min(k+1,R.length-1);draw()};g("pv").onclick=function(){k=Math.max(k-1,-1);draw()};
+g("all").onclick=function(){k=R.length-1;draw()};g("rs").onclick=function(){k=-1;draw()};draw();
+function cc(){g("cout").innerHTML=L.c(+g("mn").value,g("mx").value)}
+g("mn").onchange=cc;g("mx").onchange=cc;cc();
+var ok=0,ans=0,Q=L.Q;
+function upd(){g("score").textContent=L.sc+ok+" / "+ans;g("prog").textContent=L.of(ans,Q.length);g("bar").firstElementChild.style.width=ans/Q.length*100+"%";
+if(ans==Q.length){var pc=Math.round(ok/Q.length*100),f=g("final");f.style.display="block";f.innerHTML=L.fin(ok,Q.length,pc)}}
+function build(sf){var o=Q.map(function(_,i){return i});if(sf)sh(o);ok=0;ans=0;g("final").style.display="none";var box=g("qs");box.innerHTML="";
+o.forEach(function(qi,n){var q=Q[qi],d=document.createElement("div");d.className="q";
+var pp=document.createElement("p");pp.innerHTML="<small>"+L.qn(n+1,Q.length)+"</small><br>";pp.appendChild(document.createTextNode(q[0]));d.appendChild(pp);
+var fb=document.createElement("div"),bs=[];fb.className="fb";
+sh(q[1].map(function(_,i){return i})).forEach(function(oi){var b=document.createElement("button");b.className="opt";b.textContent=q[1][oi];bs.push([b,oi]);
+b.onclick=function(){bs.forEach(function(x){x[0].disabled=true;if(x[1]==0)x[0].classList.add("ok")});var gd=oi==0;if(!gd)b.classList.add("no");ans++;if(gd)ok++;
+fb.className="fb show "+(gd?"ok":"no");fb.innerHTML="<b>"+(gd?L.ok:L.no)+"</b> "+(gd?"":L.ra+"“"+q[1][0]+"”. ");fb.appendChild(document.createTextNode(q[2]));upd()};d.appendChild(b)});
+d.appendChild(fb);box.appendChild(d)});upd()}
+g("shuf").onclick=function(){build(true);scrollTo({top:g("quiz").offsetTop})};g("rst").onclick=function(){build(false);scrollTo({top:g("quiz").offsetTop})};
+build(false)}
+setup("e-",LE);setup("a-",LA);
+document.querySelectorAll(".lang").forEach(function(b){b.onclick=function(){document.body.classList.toggle("ar");scrollTo({top:0})}});
+})();
+</script>
+</body>
+</html>

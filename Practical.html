@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SQL Practical Labs – Interactive Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0714;--p1:#130d22;--p2:#1a1230;--line:#2c2150;--a:#c4a7ff;--a2:#9b6bff;--ad:#5b3bb0;--t:#ece6fa;--m:#a99cc9;--bad:#ff7b9c;--ok:#7be0b0;--code:#0d0a1b;--dot:rgba(196,167,255,.09);--btn:#12081f;
+box-sizing:border-box;color-scheme:dark;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root:not([data-theme=dark]){--bg:#f7f4ff;--p1:#fff;--p2:#f1ebff;--line:#d9cdf5;--a:#4b2aa8;--a2:#6d3fe0;--ad:#a98ef0;--t:#201838;--m:#5e5280;--bad:#c0204f;--ok:#0b7a4a;--code:#fbf9ff;--dot:rgba(75,42,168,.08);--btn:#fff;color-scheme:light}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(64px + env(safe-area-inset-top,0px))}
+body{margin:0;background:var(--bg);color:var(--t);font:17px/1.7 "IBM Plex Sans",system-ui,sans-serif;background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:26px 26px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:30}
+h1,h2,h3{margin:0;line-height:1.25}.mono,pre,textarea,.tag{font-family:"JetBrains Mono",ui-monospace,monospace}
+.wrap{max-width:980px;margin:0 auto;padding:0 18px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;gap:6px;overflow-x:auto;padding:10px 18px;scrollbar-width:none;align-items:center}
+nav a,nav button{color:var(--m);text-decoration:none;white-space:nowrap;padding:5px 13px;border-radius:99px;font:14px "IBM Plex Sans",sans-serif;border:1px solid transparent;background:none;cursor:pointer}
+nav a:hover,nav button:hover{color:var(--a);border-color:var(--ad)}nav .lang{border-color:var(--a2);color:var(--a);margin-left:auto}
+.hero{padding:50px 0 24px}.hero h1{font-size:clamp(30px,6vw,50px);color:var(--a)}.hero p{color:var(--m);max-width:62ch}
+.tag{display:inline-block;font-size:12px;color:var(--a2);border:1px solid var(--ad);border-radius:6px;padding:2px 10px;margin-bottom:12px}
+section{padding:36px 0 4px}h2{font-size:clamp(23px,4vw,32px);color:var(--a)}.lead{color:var(--m);margin:4px 0 16px}
+.card{background:linear-gradient(160deg,var(--p1),var(--p2));border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:14px 0}
+.card h3{font-size:18px;color:var(--a);margin-bottom:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.grid .card{margin:0}
+b{color:var(--a)}code{font-family:"JetBrains Mono",monospace;font-size:.88em;background:var(--code);padding:1px 6px;border-radius:5px;color:var(--a)}
+.ar{display:none;direction:rtl;text-align:right;color:var(--m);font-family:"IBM Plex Sans Arabic",sans-serif;margin-top:4px}body.ar .ar{display:block}
+.note{border-left:3px solid var(--a2);background:var(--dot);padding:8px 12px;border-radius:0 8px 8px 0;margin:10px 0;font-size:15px}
+textarea{width:100%;background:var(--code);color:var(--t);border:1px solid var(--line);border-radius:9px;padding:10px 12px;font-size:13.5px;line-height:1.55;resize:vertical;min-height:70px;margin-top:8px;direction:ltr}
+textarea:focus{outline:2px solid var(--a2)}
+.btn{background:var(--a2);color:var(--btn);border:0;border-radius:9px;padding:8px 16px;margin:6px 8px 4px 0;cursor:pointer;font:600 14px "IBM Plex Sans",sans-serif}
+.btn.o{background:none;color:var(--a);border:1px solid var(--ad)}.btn:hover{box-shadow:0 0 16px rgba(155,107,255,.5)}
+.out{overflow-x:auto;margin-top:6px}.out table{border-collapse:collapse;font:13px "JetBrains Mono",monospace;margin:6px 0}
+.out th,.out td{border:1px solid var(--line);padding:4px 10px;text-align:left;white-space:nowrap}.out th{background:var(--p2);color:var(--a)}.out i{color:var(--m)}
+.ok{color:var(--ok)}.err{color:var(--bad);font-family:"JetBrains Mono",monospace;font-size:13.5px}.hint{background:var(--dot);border-radius:8px;padding:6px 10px;margin-top:6px;font-size:14px}
+.opt{display:block;width:100%;text-align:left;background:var(--code);color:var(--t);border:1px solid var(--line);border-radius:9px;padding:8px 12px;margin:6px 0;cursor:pointer;font:15px "IBM Plex Sans",sans-serif}
+.opt.good{border-color:var(--ok);color:var(--ok)}.opt.bad{border-color:var(--bad);color:var(--bad)}
+.btn:focus-visible,.opt:focus-visible,nav a:focus-visible,nav button:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+footer{margin:50px 0 30px;padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:center;gap:16px}
+footer a{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--ad);background:var(--p2);transition:.2s}
+footer a:hover{box-shadow:0 0 20px rgba(155,107,255,.6);transform:translateY(-3px)}footer svg{width:24px;height:24px;fill:var(--a)}
+</style>
+</head>
+<body>
+<nav><div class="wrap" id="nav"></div></nav>
+<div class="wrap">
+<header class="hero"><span class="tag">Fundamentals of Databases · Practical Labs 1–7</span>
+<h1>SQL Practical Labs<br>Interactive Study Guide</h1>
+<p>Every lab question, explained step by step. Edit any query and press <b>Run</b> — the built-in SQL engine shows the result, or tells you exactly what went wrong.</p>
+<div class="ar">كل أسئلة العملي مشروحة خطوة خطوة. عدّل أي كود واضغط Run وبيطلعلك النتيجة أو بيقلك وين الغلط.</div></header>
+
+<section id="learn"><h2>SQL in 5 minutes</h2><p class="lead">The mental model for every query in Parts 5–7.<span class="ar">الفكرة الأساسية لكل الكويريات.</span></p>
+<div class="grid">
+<div class="card"><h3>SELECT … FROM</h3><p><code>SELECT col1, col2 FROM table;</code> picks <b>columns</b>. <code>*</code> means all columns.</p><div class="ar">SELECT بتختار الأعمدة، و FROM بتحدد الجدول، والنجمة * يعني كل الأعمدة.</div></div>
+<div class="card"><h3>WHERE</h3><p>Filters <b>rows</b>: <code>WHERE sal &gt; 2450</code>. Text goes in single quotes: <code>'Clerk'</code>.</p><div class="ar">WHERE بتفلتر الصفوف. النص بين علامتين تنصيص مفردة.</div></div>
+<div class="card"><h3>AND / OR / IN</h3><p><code>AND</code> = both true, <code>OR</code> = at least one. <code>IN (10,30)</code> is a short form of <code>= 10 OR = 30</code>.</p><div class="ar">AND لازم الشرطين، OR يكفي واحد، IN اختصار لعدة OR.</div></div>
+<div class="card"><h3>BETWEEN / LIKE</h3><p><code>BETWEEN a AND b</code> includes both ends. <code>LIKE 'Ali%'</code> starts with Ali; <code>'% Ali'</code> ends with Ali; <code>%</code> = any characters.</p><div class="ar">BETWEEN بتشمل الطرفين. % يعني أي عدد أحرف.</div></div>
+<div class="card"><h3>NULL</h3><p>NULL means “unknown”. Never write <code>= NULL</code>; use <code>IS NULL</code> / <code>IS NOT NULL</code>. Any math with NULL gives NULL (<code>sal + comm</code>).</p><div class="ar">NULL يعني مجهول. استخدم IS NULL مش = NULL. وأي عملية حسابية مع NULL نتيجتها NULL.</div></div>
+<div class="card"><h3>Alias (AS)</h3><p><code>sal * 12 AS annual_salary</code> gives a computed column a readable name.</p><div class="ar">AS بتعطي اسم للعمود المحسوب.</div></div>
+</div>
+<div class="note">Oracle vs this sandbox: the lab uses Oracle; this page runs a SQLite-based engine. Core SQL is identical. Differences: <code>COMMIT</code> is ignored, <code>DESC table</code> is supported, and <code>TO_DATE</code> is emulated. Dates are stored as <code>YYYY-MM-DD</code>.<div class="ar">المختبر بيستخدم Oracle وهالموقع بيستخدم محرك مشابه. SQL الأساسي نفسه.</div></div></section>
+
+<section id="play"><h2>Playground</h2><p class="lead">Free compiler — tables <b>DEPT</b> and <b>EMP</b> are preloaded.<span class="ar">كومبايلر حر، الجداول جاهزة.</span></p>
+<div class="card" id="pg"></div><button class="btn o" id="rs">↺ Reset database</button></section>
+
+<div id="parts"></div>
+
+<footer><a href="https://instagram.com/alaaherzallah05" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 7a5 5 0 100 10 5 5 0 000-10zm0 8.2A3.2 3.2 0 1112 8.8a3.2 3.2 0 010 6.4zM17.3 6.2a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4zM7.5 2h9A5.5 5.5 0 0122 7.5v9a5.5 5.5 0 01-5.5 5.5h-9A5.5 5.5 0 012 16.5v-9A5.5 5.5 0 017.5 2zm0 1.8A3.7 3.7 0 003.8 7.5v9a3.7 3.7 0 003.7 3.7h9a3.7 3.7 0 003.7-3.7v-9a3.7 3.7 0 00-3.7-3.7z"/></svg></a>
+<a href="https://wa.me/962775725298" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2zm0 18.2a8.2 8.2 0 01-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1112 20.200zm4.500-6.100c-.2-.1-1.500-.7-1.700-.8s-.4-.1-.6.100-.6.8-.8 1-.3.2-.6.1a6.700 6.700 0 01-3.300-2.900c-.2-.4.200-.4.700-1.300.1-.1 0-.3 0-.4l-.8-1.800c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 00-.7.300 3 3 0 00-.9 2.200 5.300 5.300 0 001.100 2.800 12 12 0 004.600 4c1.700.7 2.400.8 3.200.7a2.700 2.700 0 001.800-1.300 2.200 2.200 0 00.2-1.300c-.1-.1-.3-.2-.5-.3z"/></svg></a></footer>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-asm.js"></script>
+<script>
+const P=[
+{t:'Part 1 · Intro Quiz',a:'الجزء الأول: أسئلة مقدمة',d:['Tutorial 1 (formative). Theory: database basics. Click an answer.','أسئلة نظرية. اضغط على الإجابة.'],i:[
+{k:'m',q:'1. I contain information that identifies the physical location of a related row of data.',qa:'أنا أحتوي معلومات تحدد الموقع الفعلي لصف بيانات مرتبط.',o:['Pointer','File','Array'],r:[0],n:'A pointer stores the address (location) of related data.',na:'المؤشر Pointer يخزن عنوان البيانات.'},
+{k:'m',q:'2. I am the most commonly used data model for databases built today.',qa:'أكثر نموذج بيانات استخداماً اليوم.',o:['Object-Oriented Data Model','Relational Data Model','Hierarchy Data Model'],r:[1],n:'Relational model: data stored in tables (rows and columns).',na:'النموذج العلائقي: بيانات في جداول.'},
+{k:'m',q:'3. With me, both data and processing are spread across different computers.',qa:'البيانات والمعالجة موزعة على عدة حواسيب.',o:['Relational database','Centralized Database','Distributed Database'],r:[2],n:'Distributed database.',na:'قاعدة بيانات موزعة.'},
+{k:'m',q:'4. A relationship type allowing a lower-level entity to relate to two different higher-level entities.',qa:'علاقة تسمح لكيان أدنى بالارتباط بكيانين أعلى.',o:['One – One Relationship','Network Relationship','Many – many Relationship'],r:[1],n:'Network relationship (extension of hierarchy).',na:'العلاقة الشبكية.'},
+{k:'m',q:'5. Data are centralized but some processing is distributed across computers when using me.',qa:'البيانات مركزية والمعالجة موزعة جزئياً.',o:['Client-Server Database','Object-Oriented Database','Relational Database'],r:[0],n:'Client-Server database.',na:'قاعدة بيانات عميل-خادم.'},
+{k:'m',q:'6. Which of the following is true about the DBMS? (select all true)',qa:'أي العبارات صحيحة عن DBMS؟ (أكثر من إجابة)',o:['It helps making user management more efficient and effective.','It provides end users better access to more and better-managed data.','It promotes an integrated view of organization’s operations.','It increases the probability of inconsistent data.'],r:[0,1,2],n:'a, b, c are true. (d) is false: a DBMS <b>reduces</b> inconsistency.',na:'a و b و c صحيحة، و d خطأ لأن DBMS تقلل التناقض.'},
+{k:'t',q:'Q1. Define: Data, Information, Database.',qa:'عرّف: البيانات، المعلومات، قاعدة البيانات.',e:'<b>Data</b>: raw facts (e.g. 17, “Ali”). <b>Information</b>: data processed so it has meaning (e.g. “Ali is 17”). <b>Database</b>: an organized, shared collection of related data stored electronically.',x:'البيانات حقائق خام، المعلومات بيانات معالجة لها معنى، وقاعدة البيانات مجموعة منظمة من البيانات المترابطة.'},
+{k:'t',q:'Q2. What are the components of a Database System?',qa:'ما مكونات نظام قاعدة البيانات؟',e:'Hardware, software (DBMS, OS, applications), people (DBA, designers, end-users), procedures (rules and instructions), and data.',x:'العتاد، البرمجيات، الأشخاص، الإجراءات، والبيانات.'},
+{k:'t',q:'Q3. Describe briefly “Table” and “Operations”.',qa:'اشرح باختصار الجدول والعمليات.',e:'<b>Table</b>: rows (records) and columns (attributes) storing data about one entity. <b>Operations</b>: actions on data — insert, select (query), update, delete.',x:'الجدول صفوف وأعمدة لكيان واحد، والعمليات هي الإضافة والاستعلام والتعديل والحذف.'}]},
+{t:'Part 2 · Discussion',a:'الجزء الثاني: نقاش',d:['Tutorial 2, based on Chap01-Part01. Discussion questions with model answers.','أسئلة نقاش مع إجابات نموذجية.'],i:[
+{k:'t',q:'Q1. To create a new system (e.g. Library System), is it better to collect data first or information directly? Why?',qa:'هل الأفضل جمع البيانات أولاً أم المعلومات مباشرة؟',e:'Collect <b>data</b> first. Data is the raw material; information is produced from it by processing. You can derive many kinds of information later from good raw data, but not the reverse.',x:'نجمع البيانات أولاً لأنها المادة الخام، والمعلومات تُستخرج منها.'},
+{k:'m',q:'Q2. Which creates and manages metadata?',qa:'من يُنشئ ويدير الـ metadata؟',o:['Front-end applications','End-users','Programmers','Database Administrator (DBA)','Database Management System (DBMS)'],r:[4],n:'The DBMS creates and manages metadata (data about data, stored in the data dictionary).',na:'الـ DBMS تنشئها وتديرها.'},
+{k:'t',q:'Q3. Is a DBMS important? What if it were removed?',qa:'هل DBMS مهم؟ وماذا لو أُزيل؟',e:'Yes. It is the layer between users/applications and the data. Without it: no controlled access, more redundancy and inconsistency, weak security, no backup/recovery or concurrency control, and every application would handle files itself.',x:'نعم، بدونه تزيد الفوضى والتكرار وتضعف الأمان والنسخ الاحتياطي.'}]},
+{t:'Part 3 · Using the SQL Editor',a:'الجزء الثالث: استخدام محرر SQL',d:['Tutorial 3. How to run SQL in the university labs or online.','كيف تشغّل SQL.'],i:[
+{k:'t',q:'Section A: Oracle SQL*Plus in the labs (inside the labs only)',qa:'القسم أ: Oracle في المختبر',e:'1) Start your browser. 2) Open <code>http://172.18.2.2:5560/isqlplus</code>. 3) Username: letter <b>U</b> + your ID (e.g. U2023118800). 4) Password: letter <b>p</b> + last four digits of your ID (e.g. p8800). 5) Type <code>show user</code> and execute. 6) Run the statement below to list your objects.<br><b>Can’t log in?</b> In Chrome: ⋮ menu → Delete browsing data → choose a time range, tick cookies, cache and site data → Delete.',x:'اسم المستخدم U + رقمك الجامعي، وكلمة السر p + آخر 4 أرقام. إذا ما دخل امسح بيانات التصفح.'},
+{k:'s',q:'Show the objects in your database (empty until you create tables).',qa:'عرض الجداول الموجودة.',c:`SELECT name AS TNAME, type FROM sqlite_master WHERE type='table';`,n:'In Oracle the lab statement is <code>select * from tab;</code>. Here we read the engine’s catalog instead.',na:'في Oracle الأمر select * from tab.'},
+{k:'t',q:'Section B: Online SQL editors',qa:'القسم ب: محررات أونلاين',e:'Recommended: programiz.com/sql/online-compiler and w3schools.com/sql/sql_editor.asp. This page also works as one.',x:'ننصح بـ programiz و w3schools، وهالصفحة تشتغل كمحرر كمان.'}]},
+{t:'Part 4 · Creating Tables',a:'الجزء الرابع: إنشاء الجداول',d:['Tutorial 4. Datatypes, primary keys, CREATE TABLE and INSERT.','أنواع البيانات والمفتاح الأساسي.'],i:[
+{k:'t',q:'Discussion 1. What is a “Datatype”? Examples.',qa:'ما هو نوع البيانات؟',e:'It defines what kind of value a column can hold. Examples: <code>NUMBER</code> (45), <code>VARCHAR2(25)</code> (text), <code>DATE</code>.',x:'يحدد نوع القيمة المسموحة في العمود.'},
+{k:'t',q:'Discussion 2. What is a primary key? Example.',qa:'ما هو المفتاح الأساسي؟',e:'A column (or set) that uniquely identifies each row; it cannot be NULL or duplicated. Example: <code>StudentID</code>.',x:'عمود يميز كل صف، لا يتكرر ولا يكون NULL.'},
+{k:'t',q:'Discussion 3. Does DATE include time?',qa:'هل DATE تشمل الوقت؟',e:'In Oracle, yes: DATE stores century, year, month, day, hour, minute and second (display shows only the date by default).',x:'في Oracle نعم، تخزن التاريخ والوقت.'},
+{k:'t',q:'Discussion 4. VARCHAR vs VARCHAR2 vs CHAR?',qa:'الفرق بين VARCHAR و VARCHAR2 و CHAR',e:'<b>CHAR(n)</b>: fixed length, padded with spaces. <b>VARCHAR2(n)</b>: variable length, Oracle’s recommended text type. <b>VARCHAR</b>: currently a synonym of VARCHAR2, reserved by Oracle for future change.',x:'CHAR طول ثابت، VARCHAR2 طول متغير وهو المعتمد في Oracle.'},
+{k:'s',q:'Q1. Create table person, insert your row, display it.',qa:'أنشئ جدول person وأدخل بياناتك واعرضها.',c:`CREATE TABLE person (
+  p_ID number not null,
+  p_name varchar(25),
+  p_hometown varchar(10),
+  p_state varchar(10),
+  p_birthday date,
+  primary key (p_ID)
+);
+INSERT INTO person VALUES (202611111,'Ali Ahmad','Alhoson','Irbid','2004-04-06');
+SELECT * FROM person;`,n:'Replace the values with your own. Date format here is YYYY-MM-DD. Run twice and you get a “table already exists” error — that is expected.',na:'غيّر القيم لقيمك. إذا شغلته مرتين بيطلع خطأ الجدول موجود.'},
+{k:'s',q:'Q2.1 Create the student table (ID, name, credit hours, CGPA) and enter the given data.',qa:'أنشئ الجدول وأدخل البيانات.',c:`CREATE TABLE StudentCGPA (
+  StudentID NUMBER(8) PRIMARY KEY,
+  StudentName VARCHAR2(20),
+  CreditHrs NUMBER(3),
+  CGPA NUMBER(2,1)
+);
+INSERT INTO StudentCGPA VALUES (98000123,'Anne Smith',43,3.7);
+INSERT INTO StudentCGPA VALUES (97000225,'Larry Johnson',67,2.8);
+INSERT INTO StudentCGPA VALUES (97001188,'Maria Jones',83,2.7);
+INSERT INTO StudentCGPA VALUES (98001297,'Samuel Brown',57,3.3);
+INSERT INTO StudentCGPA VALUES (98002560,'Alice Green',35,3.2);
+SELECT * FROM StudentCGPA;`,n:'Datatypes were chosen from the data: 8-digit ID → NUMBER(8); one decimal → NUMBER(2,1).',na:'اخترنا النوع حسب البيانات. شغّل هذا أولاً قبل الأسئلة التالية.'},
+{k:'s',q:'Q2.2a List names and IDs of students whose ID is 98001297.',qa:'اعرض اسم ورقم الطالب صاحب الرقم 98001297.',c:`SELECT StudentName, StudentID FROM StudentCGPA WHERE StudentID = 98001297;`},
+{k:'s',q:'Q2.2b List names and IDs of students whose name is ‘Anne Smith’.',qa:'الطالب باسم Anne Smith.',c:`SELECT StudentName, StudentID FROM StudentCGPA WHERE StudentName = 'Anne Smith';`},
+{k:'s',q:'Q2.2c List names and IDs of students whose credit hours are less than 60.',qa:'الطلاب الساعات أقل من 60.',c:`SELECT StudentName, StudentID FROM StudentCGPA WHERE CreditHrs < 60;`}]},
+{t:'Part 5 · CREATE & INSERT',a:'الجزء الخامس: إنشاء وإدخال',d:['Create tables with constraints, insert data, and meet the DEPT & EMP practice database.','جداول مع قيود وإدخال بيانات.'],i:[
+{k:'s',q:'Q1. Create table STUDENT: StudentID Numeric(10) Primary key; FirstName String(20) Not null; LastName String(20) Not null; DateOfBirth Date; Major String(15); Average Numeric with two digits for fraction.',qa:'أنشئ جدول STUDENT حسب المواصفات.',c:`CREATE TABLE STUDENT (
+  StudentID   NUMBER(10) PRIMARY KEY,
+  FirstName   VARCHAR2(20) NOT NULL,
+  LastName    VARCHAR2(20) NOT NULL,
+  DateOfBirth DATE,
+  Major       VARCHAR2(15),
+  Average     NUMBER(5,2)
+);`,n:'<code>NUMBER(5,2)</code> = up to 5 digits, 2 after the decimal point (e.g. 82.50). <code>NOT NULL</code> forces a value.',na:'NUMBER(5,2) يعني 5 خانات منها 2 كسور.'},
+{k:'s',q:'Q2. Insert your information into STUDENT.',qa:'أدخل بياناتك.',c:`INSERT INTO STUDENT (StudentID, FirstName, LastName, DateOfBirth, Major, Average)
+VALUES (202400000, 'Ali', 'Ahmad', TO_DATE('25-05-2005','DD-MM-YYYY'), 'CS', 82.50);
+COMMIT;`,n:'Use your own ID and name. The lab sheet writes the date as a made-up function; the correct way is <code>TO_DATE('+"'25-05-2005','DD-MM-YYYY'"+')</code>. COMMIT saves the data in Oracle.',na:'الطريقة الصحيحة للتاريخ TO_DATE. و COMMIT بتحفظ البيانات في Oracle.'},
+{k:'s',q:'Q3. Show the contents of STUDENT.',qa:'اعرض محتويات الجدول.',c:`SELECT * FROM STUDENT;`},
+{k:'s',q:'Q4. Create three more tables with appropriate names/fields (COURSE, employee, and a linking table).',qa:'أنشئ ثلاثة جداول إضافية.',c:`CREATE TABLE COURSE (
+  CourseID   NUMBER(5) PRIMARY KEY,
+  CourseName VARCHAR2(30) NOT NULL,
+  CreditHrs  NUMBER(1)
+);
+CREATE TABLE EmpInfo (
+  EmpID    NUMBER(5) PRIMARY KEY,
+  EmpName  VARCHAR2(30) NOT NULL,
+  Office   VARCHAR2(10),
+  Salary   NUMBER(7,2)
+);
+CREATE TABLE Info (
+  StudentID NUMBER(10),
+  CourseID  NUMBER(5),
+  Grade     NUMBER(5,2),
+  PRIMARY KEY (StudentID, CourseID),
+  FOREIGN KEY (StudentID) REFERENCES STUDENT(StudentID),
+  FOREIGN KEY (CourseID) REFERENCES COURSE(CourseID)
+);`,n:'The lab names the second table <code>Emp</code>; here it is <code>EmpInfo</code> so it does not clash with the practice EMP table. <b>Info</b> uses a composite primary key and two foreign keys linking students to courses.',na:'سميناه EmpInfo حتى ما يتعارض مع جدول EMP. جدول Info فيه مفتاح مركب ومفتاحين خارجيين.'},
+{k:'s',q:'Practice scenario: DEPT & EMP (DEPTNO links them). The code that creates them is below; the tables and all 4 + 16 INSERT rows are already loaded in this site’s database.',qa:'جداول DEPT و EMP جاهزة مسبقاً بكل بياناتها. هذا كود إنشائها.',c:`CREATE TABLE Dept(
+  DeptNo NUMBER(2) PRIMARY KEY,
+  DName VARCHAR2(14),
+  Address VARCHAR2(13));
+CREATE TABLE Emp(
+  EmpNo NUMBER(3) PRIMARY KEY,
+  EName VARCHAR2(15),
+  Job VARCHAR2(12),
+  HireDate DATE,
+  Sal NUMBER(7,2),
+  Comm NUMBER(7,2),
+  DeptNo NUMBER(2),
+  FOREIGN KEY (DeptNo) REFERENCES Dept (DeptNo) ON DELETE CASCADE);`,n:'Do not run it (tables exist). Instead use the next boxes to view them: <code>SELECT * FROM Dept;</code> and <code>DESC Emp</code>. A <b>foreign key</b> forces EMP.DeptNo to match a DEPT row; <code>ON DELETE CASCADE</code> deletes employees when their department is deleted.',na:'المفتاح الخارجي يربط الجدولين، و CASCADE يحذف الموظفين عند حذف القسم.'},
+{k:'s',q:'Q5. Show the contents of the EMP table.',qa:'اعرض كل جدول EMP.',c:`SELECT * FROM Emp;`},
+{k:'s',q:'Q6. Show employee name, salary, and department number.',qa:'الاسم والراتب ورقم القسم.',c:`SELECT EName, Sal, DeptNo FROM Emp;`},
+{k:'s',q:'Q7. Show employee name, salary, and commission.',qa:'الاسم والراتب والعمولة.',c:`SELECT EName, Sal, Comm FROM Emp;`},
+{k:'s',q:'Q8. Show salary, and salary + 1.1.',qa:'الراتب والراتب + 1.1',c:`SELECT Sal, Sal + 1.1 FROM Emp;`},
+{k:'s',q:'Q9. Show employee name, ID, salary + commission.',qa:'الاسم والرقم والراتب + العمولة.',c:`SELECT EName, EmpNo, Sal + Comm FROM Emp;`,n:'Notice many results are NULL: when <code>Comm</code> is NULL, <code>Sal + Comm</code> is NULL. (Fix: <code>Sal + COALESCE(Comm,0)</code>.)',na:'النتيجة NULL إذا العمولة NULL. الحل COALESCE.'},
+{k:'s',q:'Q10. Show employee name, ID, and job.',qa:'الاسم والرقم والوظيفة.',c:`SELECT EName, EmpNo, Job FROM Emp;`}]},
+{t:'Part 6 · SELECT & WHERE',a:'الجزء السادس: SELECT و WHERE',d:['Querying DEPT and EMP with conditions.','استعلامات بشروط.'],i:[
+{k:'s',q:'Q1. Show the contents of the DEPT table.',qa:'محتويات DEPT.',c:`SELECT * FROM Dept;`},
+{k:'s',q:'Q2. Show department number, name and address.',qa:'رقم واسم وعنوان القسم.',c:`SELECT DeptNo, DName, Address FROM Dept;`},
+{k:'s',q:'Q3. Same, for the department with number = 10.',qa:'للقسم رقم 10.',c:`SELECT DeptNo, DName, Address FROM Dept WHERE DeptNo = 10;`},
+{k:'s',q:'Q4. All information about each department located in Amman.',qa:'الأقسام الموجودة في عمان.',c:`SELECT * FROM Dept WHERE Address = 'Amman';`},
+{k:'s',q:'Q5. All information about all employees.',qa:'كل معلومات الموظفين.',c:`SELECT * FROM Emp;`},
+{k:'s',q:'Q6. Each employee working in department number 10.',qa:'موظفو القسم 10.',c:`SELECT * FROM Emp WHERE DeptNo = 10;`},
+{k:'s',q:'Q7. All employees whose designation is ‘Clerk’.',qa:'الموظفون بوظيفة Clerk.',c:`SELECT * FROM Emp WHERE Job = 'Clerk';`},
+{k:'s',q:'Q8. Clerks working in department #10.',qa:'Clerk في القسم 10.',c:`SELECT * FROM Emp WHERE Job = 'Clerk' AND DeptNo = 10;`},
+{k:'s',q:'Q9. Clerks working in department #30.',qa:'Clerk في القسم 30.',c:`SELECT * FROM Emp WHERE Job = 'Clerk' AND DeptNo = 30;`,n:'Empty result = no row matches both conditions. That is a valid answer, not an error.',na:'نتيجة فارغة يعني ما في تطابق، مش خطأ.'},
+{k:'s',q:'Q10. All employees working in department #10 and department #30.',qa:'موظفو القسم 10 و 30.',c:`SELECT * FROM Emp WHERE DeptNo = 10 OR DeptNo = 30;`,n:'Use <code>OR</code>, not <code>AND</code>: one employee cannot be in two departments at once.',na:'نستخدم OR لأن الموظف ما بكون في قسمين.'}]},
+{t:'Part 7 · Advanced Queries',a:'الجزء السابع: استعلامات متقدمة',d:['Expressions, ranges, NULL, IN and LIKE, plus homework for the next quiz.','تعابير ونطاقات و NULL و LIKE وواجب.'],i:[
+{k:'s',q:'Q1. Show employee name, ID, and salary.',qa:'الاسم والرقم والراتب.',c:`SELECT EName, EmpNo, sal FROM Emp;`},
+{k:'s',q:'Q2. Add annual salary = sal * 12.',qa:'أضف الراتب السنوي.',c:`SELECT EName, EmpNo, sal, sal * 12 AS annual_salary FROM Emp;`},
+{k:'s',q:'Q3. Show name, ID, salary, commission, and monthly salary = sal + comm.',qa:'الراتب الشهري = الراتب + العمولة.',c:`SELECT EName, EmpNo, sal, comm, sal + comm AS monthly_salary FROM Emp;`},
+{k:'s',q:'Q4. All information about each employee whose salary is greater than 2450.',qa:'الراتب أكبر من 2450.',c:`SELECT * FROM Emp WHERE sal > 2450;`},
+{k:'s',q:'Q5. Salary ≥ 2450 and ≤ 3000.',qa:'الراتب بين 2450 و 3000.',c:`SELECT * FROM Emp WHERE sal >= 2450 AND sal <= 3000;`,n:'Equivalent: <code>sal BETWEEN 2450 AND 3000</code>.',na:'ممكن نستخدم BETWEEN.'},
+{k:'s',q:'Q6. Employees who have no commission.',qa:'الموظفون بدون عمولة.',c:`SELECT * FROM Emp WHERE comm IS NULL;`},
+{k:'s',q:'Q7. Employees working in department 10, 30, and 40.',qa:'الأقسام 10 و 30 و 40.',c:`SELECT * FROM Emp WHERE DeptNo IN (10, 30, 40);`},
+{k:'s',q:'Q8. The employee whose name is ‘Boza Bared’.',qa:'الموظف Boza Bared.',c:`SELECT * FROM Emp WHERE EName = 'Boza Bared';`},
+{k:'s',q:'Q9. Each employee whose first name is ‘Ali’.',qa:'اسمه الأول Ali.',c:`SELECT * FROM Emp WHERE EName LIKE 'Ali%';`,n:'<code>'+"'Ali%'"+'</code>: starts with “Ali”.',na:'يبدأ بـ Ali.'},
+{k:'s',q:'Q10. Each employee whose last name is ‘Ali’ and who has a commission.',qa:'اسمه الأخير Ali وعنده عمولة.',c:`SELECT * FROM Emp WHERE EName LIKE '% Ali' AND comm IS NOT NULL;`,n:'<code>'+"'% Ali'"+'</code>: ends with “ Ali” (the space separates first and last name).',na:'ينتهي بـ Ali.'},
+{k:'s',q:'HW(1). Employee name and monthly payment (SAL + COMM) for each employee hired between 1-06-1985 and 16-07-1997.',qa:'واجب 1: الاسم والدفعة الشهرية لمن عُيّن بين التاريخين.',c:`SELECT EName, sal + comm AS monthly_payment
+FROM emp
+WHERE hiredate BETWEEN TO_DATE('01-06-1985','DD-MM-YYYY') AND TO_DATE('16-07-1997','DD-MM-YYYY');`,n:'Expect NULLs for employees without commission (see NULL rule).',na:'بتظهر NULL لمن ما عنده عمولة.'},
+{k:'s',q:'HW(2). Employees in department 10 and 30, salary greater than 2000, and no commission.',qa:'واجب 2: القسم 10 و30 والراتب > 2000 وبدون عمولة.',c:`SELECT * FROM Emp WHERE DeptNo IN (10, 30) AND sal > 2000 AND comm IS NULL;`}]}
+];
+let db,SQL;const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const pad=n=>String(n).padStart(2,'0');
+function toDate(s,f){const m=String(s).match(/(\d+)\D+(\d+)\D+(\d+)/);if(!m)return null;let d,mo,y;if(/^y/i.test(f||'')){[y,mo,d]=[m[1],m[2],m[3]]}else{[d,mo,y]=[m[1],m[2],m[3]]}if(y.length<3)y=(+y<50?'20':'19')+pad(y);return y+'-'+pad(mo)+'-'+pad(d)}
+function init(){db=new SQL.Database();db.create_function('TO_DATE',toDate);
+db.run(`CREATE TABLE Dept(DeptNo NUMBER(2) PRIMARY KEY,DName VARCHAR2(14),Address VARCHAR2(13));CREATE TABLE Emp(EmpNo NUMBER(3) PRIMARY KEY,EName VARCHAR2(15),Job VARCHAR2(12),HireDate DATE,Sal NUMBER(7,2),Comm NUMBER(7,2),DeptNo NUMBER(2),FOREIGN KEY(DeptNo) REFERENCES Dept(DeptNo) ON DELETE CASCADE);`);
+[[10,'Accounting','Amman'],[20,'Research','Zarqa'],[30,'Sales','Amman'],[40,'Management','Irbid']].forEach(r=>db.run('INSERT INTO Dept VALUES(?,?,?)',r));
+[[125,'Qais Ahmad','Clerk','17-12-89',800,null,20],[112,'Alia Nori','Salesman','20-2-88',1600,3.3,30],[113,'Scoot Tam','Salesman','22-2-97',1250,5.5,30],[114,'Ali Salem','Manager','02-4-99',2975,null,20],[115,'Salem Ali','Salesman','28-9-96',2450,14,30],[120,'Nora Ali','Manager','01-5-97',2850,null,30],[122,'Boza Bared','Manager','02-4-99',2450,null,10],[121,'Alia Ali','Analyst','19-4-87',3000,null,10],[123,'Hamadah Zaq','Taster ','17-11-95',5000,null,null],[111,'Ali Salem','Salesman','08-9-94',1500,1,30],[124,'Fatemah','Clerk','23-5-99',1100,null,40],[126,'Ali Ali','Secretary','03-12-98',950,null,30],[110,'Nori Ali','Analyst','03-12-91',3000,9.99,20],[127,'Alias Sari','Clerk','23-1-98',1300,null,10],[128,'Ali Kamil','Clerk','03-12-99',1500,null,10],[129,'Abodeh Hla','Taster ','17-11-95',5010,null,10]].forEach(r=>{r[3]=toDate(r[3]);db.run('INSERT INTO Emp VALUES(?,?,?,?,?,?,?)',r)})}
+const H=[[/no such table/i,'Table not found: check the spelling, or create it first (CREATE TABLE).','الجدول غير موجود: تأكد من الاسم أو أنشئه أولاً.'],[/no such column/i,'Column not found: check column names with <code>DESC Emp</code>.','العمود غير موجود: افحص الأسماء بـ DESC.'],[/syntax error/i,'Syntax error near the text shown: look for a missing comma, quote, bracket, a typo in a keyword, or a missing semicolon between statements.','خطأ كتابة: دور على فاصلة أو علامة تنصيص أو قوس ناقص أو خطأ بالكلمة.'],[/already exists/i,'This table already exists. Use another name or <code>DROP TABLE name;</code> first.','الجدول موجود. غيّر الاسم أو احذفه.'],[/UNIQUE|PRIMARY KEY/i,'Duplicate primary key: that ID already exists in the table.','المفتاح الأساسي مكرر.'],[/NOT NULL/i,'A NOT NULL column received no value.','عمود NOT NULL ما أخذ قيمة.'],[/FOREIGN KEY/i,'Foreign key violation: the referenced row does not exist in the parent table.','مخالفة مفتاح خارجي: السجل المرجعي غير موجود.'],[/values for|columns/i,'The number of values does not match the number of columns.','عدد القيم لا يطابق عدد الأعمدة.']];
+function tbl(r){return `<table><tr>${r.columns.map(c=>`<th>${esc(c)}</th>`).join('')}</tr>${r.values.map(v=>`<tr>${v.map(x=>`<td>${x===null?'<i>NULL</i>':esc(x)}</td>`).join('')}</tr>`).join('')}</table><div class="ok">${r.values.length} row(s)</div>`}
+function run(c){const o=c.querySelector('.out');if(!db){o.textContent='Engine is loading…';return}
+let q=c.querySelector('textarea').value.replace(/^\s*commit\s*;?/gim,'').replace(/^\s*desc(?:ribe)?\s+(\w+)\s*;?/gim,'PRAGMA table_info($1);');
+try{const r=db.exec(q);o.innerHTML=r.length?r.map(tbl).join(''):'<div class="ok">✔ Executed successfully. Use SELECT to see the data.</div>'}
+catch(e){const h=H.find(x=>x[0].test(e.message));o.innerHTML=`<div class="err">✖ ${esc(e.message)}</div>`+(h?`<div class="hint">💡 ${h[1]}<div class="ar">${h[2]}</div></div>`:'')}}
+function sqlCard(x,l){return `<div class="card"><h3>${l}</h3><p>${x.q}</p><div class="ar">${x.qa||''}</div><textarea spellcheck="false" rows="${Math.min(12,(x.c||'').split('\n').length+1)}" data-o="${esc(x.c||'')}">${esc(x.c||'')}</textarea><button class="btn" data-a="run">▶ Run</button><button class="btn o" data-a="rc">Reset code</button><div class="out"></div>${x.n?`<div class="note">${x.n}<div class="ar">${x.na||''}</div></div>`:''}</div>`}
+function mcq(x){return `<div class="card" data-r="${x.r}"><h3>Question</h3><p>${x.q}</p><div class="ar">${x.qa}</div>${x.o.map((o,i)=>`<button class="opt" data-i="${i}">${o}</button>`).join('')}<div class="note" hidden>${x.n}<div class="ar">${x.na}</div></div></div>`}
+$('#nav').innerHTML=`<a href="#learn">Basics</a><a href="#play">Playground</a>`+P.map((p,i)=>`<a href="#p${i+1}">Part ${i+1}</a>`).join('')+`<button class="lang" id="lg">عربي</button>`;
+$('#parts').innerHTML=P.map((p,i)=>`<section id="p${i+1}"><h2>${p.t}</h2><div class="ar" style="font-size:20px">${p.a}</div><p class="lead">${p.d[0]}<span class="ar">${p.d[1]}</span></p>`+p.i.map(x=>x.k=='m'?mcq(x):x.k=='t'?`<div class="card"><h3>${x.q}</h3><div class="ar">${x.qa}</div><p>${x.e}</p><div class="ar">${x.x}</div></div>`:sqlCard(x,'Task')).join('')+'</section>').join('');
+$('#pg').innerHTML=sqlCard({q:'Write any SQL here, e.g. SELECT * FROM Emp WHERE Sal > 2000;',qa:'اكتب أي كود SQL هنا.',c:`SELECT * FROM Emp WHERE Sal > 2000;`},'Try it yourself').replace(/<div class="card">|<\/div>$/g,'');
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+if(b.dataset.a=='run')run(b.closest('.card'));
+if(b.dataset.a=='rc'){const t=b.closest('.card').querySelector('textarea');t.value=t.dataset.o}
+if(b.classList.contains('opt')){const c=b.closest('.card'),r=JSON.parse('['+c.dataset.r+']');b.classList.add(r.includes(+b.dataset.i)?'good':'bad');c.querySelector('.note').hidden=false}
+if(b.id=='lg'){document.body.classList.toggle('ar');b.textContent=document.body.classList.contains('ar')?'English only':'عربي'}
+if(b.id=='rs'&&SQL){init();$('#pg .out').innerHTML='<div class="ok">✔ Database reset to the original DEPT & EMP.</div>'}});
+document.addEventListener('keydown',e=>{if(e.ctrlKey&&e.key=='Enter'&&e.target.tagName=='TEXTAREA')run(e.target.closest('.card'))});
+initSqlJs().then(S=>{SQL=S;init()});
+</script>
+</body>
+</html>

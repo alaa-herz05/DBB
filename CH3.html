@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chapter 3 – ER Modeling & Normalization Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0714;--p1:#130d22;--p2:#1a1230;--line:#2c2150;--a:#c4a7ff;--a2:#9b6bff;--ad:#5b3bb0;--t:#ece6fa;--m:#a99cc9;--bad:#ff7b9c;--ok:#7be0b0;--in:#0e0820;--dot:rgba(196,167,255,.09);--bt:#12081f;
+box-sizing:border-box;color-scheme:dark;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root{--bg:#f7f4ff;--p1:#fff;--p2:#f1ebff;--line:#d9cdf5;--a:#4b2aa8;--a2:#6d3fe0;--ad:#a98ef0;--t:#201838;--m:#5e5280;--bad:#c0204f;--ok:#0b7a4a;--in:#fbf9ff;--dot:rgba(75,42,168,.08);--bt:#fff;color-scheme:light}}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:calc(64px + env(safe-area-inset-top,0px))}
+body{margin:0;background:var(--bg);color:var(--t);font:17px/1.7 "IBM Plex Sans",system-ui,sans-serif;background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:26px 26px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:30}
+h1,h2,h3{margin:0;line-height:1.25}.mono{font-family:"JetBrains Mono",monospace}
+.wrap{max-width:960px;margin:0 auto;padding:0 18px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;gap:6px;overflow-x:auto;padding:10px 18px;scrollbar-width:none}
+nav a,nav button{color:var(--m);text-decoration:none;white-space:nowrap;padding:5px 13px;border-radius:99px;font:14px "IBM Plex Sans",sans-serif;border:1px solid transparent;background:none;cursor:pointer}
+nav a:hover,nav button:hover{color:var(--a);border-color:var(--ad)}nav .lang{border-color:var(--a2);color:var(--a);margin-left:auto}
+.hero{padding:50px 0 20px}.hero h1{font-size:clamp(30px,6vw,50px);color:var(--a);text-shadow:0 0 30px rgba(155,107,255,.4)}.hero p{color:var(--m);max-width:60ch}
+.tag{display:inline-block;font:12px "JetBrains Mono",monospace;color:var(--a2);border:1px solid var(--ad);border-radius:6px;padding:2px 10px;margin-bottom:12px}
+section{padding:34px 0 4px}h2{font-size:clamp(23px,4vw,32px);color:var(--a)}.lead{color:var(--m);margin:4px 0 16px}
+.card{background:linear-gradient(160deg,var(--p1),var(--p2));border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:14px 0}
+.card h3{font-size:18px;color:var(--a);margin-bottom:6px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}.grid .card{margin:0}
+b{color:var(--a)}code{font:.88em "JetBrains Mono",monospace;background:var(--in);padding:1px 6px;border-radius:5px;color:var(--a)}ul{margin:6px 0;padding-left:20px}
+.ar{display:none;direction:rtl;text-align:right;color:var(--m);font-family:"IBM Plex Sans Arabic",sans-serif;margin-top:4px}body.ar .ar{display:block}
+.tip{border-left:3px solid var(--a2);background:var(--dot);padding:9px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:15.5px;min-height:46px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.chip{background:var(--in);color:var(--t);border:1px solid var(--ad);border-radius:99px;padding:6px 14px;cursor:pointer;font:500 14px "JetBrains Mono",monospace}.chip.on{background:var(--a2);color:var(--bt);border-color:var(--a)}
+.btn{background:var(--a2);color:var(--bt);border:0;border-radius:9px;padding:8px 16px;margin:6px 8px 4px 0;cursor:pointer;font:600 14px "IBM Plex Sans",sans-serif}.btn.o{background:none;color:var(--a);border:1px solid var(--ad)}.btn:hover{box-shadow:0 0 16px rgba(155,107,255,.5)}
+.scroll{overflow-x:auto}table{border-collapse:collapse;font:13px "JetBrains Mono",monospace;margin:6px 0;min-width:420px}th,td{border:1px solid var(--line);padding:6px 11px;text-align:left}th{background:var(--p2);color:var(--a)}
+tbody tr.r{cursor:pointer}tr.hl td{background:rgba(155,107,255,.3)}.pk{text-decoration:underline;font-weight:700}
+.tb{display:inline-block;vertical-align:top;margin:6px 10px 6px 0}.tb h4{margin:0;color:var(--ok);font:600 13px "JetBrains Mono",monospace}
+select{background:var(--in);color:var(--t);border:1px solid var(--ad);border-radius:8px;padding:6px 10px;font:600 15px "JetBrains Mono",monospace;margin:0 8px}
+.q{background:linear-gradient(160deg,var(--p1),var(--p2));border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:12px 0}.q p{margin:0 0 8px;font-weight:600}
+.opt{display:block;width:100%;text-align:left;margin:6px 0;padding:9px 14px;border-radius:9px;border:1px solid var(--line);background:var(--in);color:var(--t);font:inherit;font-size:15.5px;cursor:pointer}
+.opt.good{border-color:var(--ok);color:var(--ok)}.opt.bad{border-color:var(--bad);color:var(--bad)}.bar{height:8px;background:var(--in);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ad),var(--a));transition:width .4s}
+.btn:focus-visible,.opt:focus-visible,.chip:focus-visible,nav a:focus-visible,nav button:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+</style></head><body>
+<nav><div class="wrap"><a href="#rules">Business Rules</a><a href="#tc">Tiny College ERD</a><a href="#card">Cardinality</a><a href="#norm">Normalization</a><a href="#case">Case Study</a><a href="#steps">1NF → 3NF</a><a href="#final">Final Design</a><a href="#sum">Summary</a><a href="#quiz">Quiz</a><button class="lang" id="lg">عربي</button></div></nav>
+<div class="wrap">
+<header class="hero"><span class="tag">Chapter 3 · Part 1 + Part 2</span><h1>ER Modeling &amp;<br>Normalization</h1>
+<p>From business rules to a clean set of tables. Tap, click and step through everything.</p><div class="ar">من قواعد العمل إلى جداول سليمة. اضغط وجرّب كل شي.</div></header>
+
+<section id="rules"><h2>1. Business Rules</h2><p class="lead">The starting point of any database design.</p>
+<div class="card"><p>A statement that defines or constrains some aspect of the business, to assert structure or to control or influence behavior. Derived from policies, procedures, events, functions and other business objects. They <b>state constraints</b> on the organization and <b>govern how data are handled and stored</b>.</p>
+<div class="ar">قاعدة العمل جملة تحدد أو تقيّد جانباً من العمل، وتحكم كيف تُخزَّن البيانات وتُعالَج.</div></div>
+<div class="card"><h3>Policies that shape the data (tap one)</h3><div class="chips" id="pol"></div><div class="tip" id="pout">Pick a policy.</div></div>
+<div class="grid"><div class="card"><h3>Gathering rules from</h3><ul><li>Descriptions of business functions, events, policies, stakeholders</li><li>Interview notes</li><li>Organizational documents (personnel manuals, contracts, marketing brochures)</li></ul><div class="ar">نجمعها من وصف الوظائف والمقابلات والوثائق.</div></div>
+<div class="card"><h3>A good business rule is</h3><div class="chips" id="gc"></div><div class="tip" id="gout">Pick a characteristic.</div></div>
+<div class="card"><h3>Naming data objects</h3><ol><li>Relate to business</li><li>Meaningful</li><li>Unique</li><li>Readable</li><li>Taken from approved list</li></ol><div class="ar">اسم مرتبط بالعمل، له معنى، فريد، مقروء، ومن قائمة معتمدة.</div></div></div>
+<div class="card"><h3>Developing an E-R diagram</h3><p>Database design is <b>iterative</b>, not linear. It starts with a general narrative of the organization’s operations; the basic ER model is drawn and reviewed; the process repeats until end users and designers agree the ERD is a fair representation of the organization.</p><div class="ar">التصميم متكرر: نبدأ بوصف عام، نرسم، نراجع، ونكرر حتى يتفق المستخدمون والمصممون.</div></div></section>
+
+<section id="tc"><h2>2. Tiny College Database</h2><p class="lead">Tap a row (Table 4.2) to read the relationship. Entities: SCHOOL, DEPARTMENT, EMPLOYEE, PROFESSOR, COURSE, CLASS, ENROLL (composite), STUDENT.</p>
+<div class="card scroll"><table><thead><tr><th>ENTITY</th><th>RELATIONSHIP</th><th>CONN.</th><th>ENTITY</th></tr></thead><tbody id="tb"></tbody></table><div class="tip" id="tout">Tap a row.</div></div>
+<div class="grid"><div class="card"><h3>Supertype / Subtype</h3><p>EMPLOYEE is the <b>supertype</b>; PROFESSOR and ADMINISTRATOR are <b>subtypes</b> (every professor is an employee). Deans are administrators with professorial rank. Shown as a 1:1 link in the ERD.</p><div class="ar">EMPLOYEE نوع أعلى، و PROFESSOR و ADMINISTRATOR أنواع فرعية.</div></div>
+<div class="card"><h3>Composite entity</h3><p><b>ENROLL</b> implements the M:N relationship STUDENT enrolls in CLASS, turning it into two 1:M links.</p><div class="ar">ENROLL كيان مركب يحوّل علاقة M:N إلى علاقتين 1:M.</div></div></div></section>
+
+<section id="card"><h2>3. Cardinality (min, max)</h2><p class="lead">How to read the numbers in parentheses.</p>
+<div class="card"><div class="mono">PROFESSOR — teaches — CLASS</div><br>Min<select id="mn"><option>0</option><option>1</option></select>Max<select id="mx"><option>1</option><option>4</option><option>6</option><option>35</option><option>N</option></select><div class="tip" id="cout"></div>
+<div class="ar">Min 0 يعني اختيارية (optional)، و Min 1 إلزامية (mandatory). Max هو أكبر عدد مسموح.</div></div></section>
+
+<section id="norm"><h2>4. Normalization</h2><p class="lead">A process for assigning attributes to entities that reduces data redundancy and eliminates data anomalies. It works through <b>normal forms</b>: 1NF, 2NF, 3NF.</p>
+<div class="ar">التطبيع يقلل التكرار ويزيل الشذوذ (anomalies) عبر مراحل: 1NF ثم 2NF ثم 3NF.</div>
+<div class="card"><h3>Problems with the unnormalized report table</h3><ul><li>The project number should be the primary key, but it contains <b>nulls</b>.</li><li>Data is <b>redundant</b> and invites inconsistencies.</li></ul><div class="chips" id="an"></div><div class="tip" id="aout">Pick an anomaly.</div></div></section>
+
+<section id="case"><h2>5. Case: A Construction Company</h2><p class="lead">Projects, employees, and billing.</p>
+<div class="card"><p>A building project has a <b>project number</b>, <b>name</b>, and assigned employees. An employee has a <b>number</b>, <b>name</b>, and <b>job classification</b>. Clients are billed for hours worked per project; the <b>hourly billing rate depends on the employee’s position</b>. A periodic report is generated.</p>
+<div class="ar">الشركة تحاسب العملاء على الساعات، وسعر الساعة يعتمد على وظيفة الموظف.</div>
+<div class="scroll"><table><tr><th>PROJ_NUM</th><th>PROJ_NAME</th><th>EMP_NUM</th><th>EMP_NAME</th><th>JOB_CLASS</th><th>CHG_HOUR</th><th>HOURS</th></tr>
+<tr><td>15</td><td>Evergreen</td><td>103</td><td>June E. Arbough</td><td>Elec. Engineer</td><td>84.50</td><td>23.8</td></tr>
+<tr><td></td><td></td><td>101</td><td>John G. News</td><td>Database Designer</td><td>105.00</td><td>19.4</td></tr>
+<tr><td></td><td></td><td>105</td><td>Alice K. Johnson</td><td>Database Designer</td><td>105.00</td><td>35.7</td></tr>
+<tr><td>18</td><td>Amber Wave</td><td>114</td><td>Annelise Jones</td><td>Applications Designer</td><td>48.10</td><td>24.6</td></tr></table></div></div></section>
+
+<section id="steps"><h2>6. From 1NF to 3NF</h2><p class="lead">Step through the conversion. Then test which attribute breaks which rule.</p>
+<div class="card"><div class="chips" id="st"></div><h3 id="sh"></h3><div class="scroll" id="sb"></div><div class="tip" id="sn"></div><div class="ar" id="sa"></div></div>
+<div class="card"><h3>Dependency checker (key = PROJ_NUM + EMP_NUM)</h3><div class="chips" id="dc"></div><div class="tip" id="dout">Pick an attribute.</div></div></section>
+
+<section id="final"><h2>7. Business Rules → ERD → Schema</h2>
+<div class="card"><ul><li>The company manages <b>many projects</b>; each project requires <b>many employees</b>.</li><li>An employee may be assigned to <b>several projects</b>; some are not assigned (labor pool).</li><li>Each employee has a <b>single</b> primary job classification, which determines the hourly rate; many employees can share a classification.</li></ul>
+<p>Relationships: <code>PROJECT 1:M ASSIGN</code>, <code>EMPLOYEE 1:M ASSIGN</code> (so PROJECT–EMPLOYEE is M:N via ASSIGN), <code>JOB 1:M EMPLOYEE</code>.</p>
+<p>Implementable tables: <code>PROJECT(PROJ_NUM, PROJ_NAME)</code> · <code>JOB(JOB_CODE, JOB_DESCRIPTION, JOB_CHG_HOUR)</code> · <code>EMPLOYEE(EMP_NUM, EMP_LNAME, EMP_INITIAL, EMP_HIREDATE, JOB_CODE*)</code> · <code>ASSIGNMENT(ASSIGN_NUM, ASSIGN_DATE, PROJ_NUM*, EMP_NUM*, ASSIGN_HOURS…)</code> &nbsp;(* = foreign key)</p>
+<div class="ar">الجداول النهائية جاهزة للتنفيذ، والنجمة تعني مفتاح خارجي. التفاصيل الدقيقة للأعمدة من شريحة 43.</div></div></section>
+
+<section id="sum"><h2>8. Summary</h2><div class="grid">
+<div class="card"><h3>1NF</h3>Key attributes defined, <b>no repeating groups</b>, all attributes depend on the PK.</div>
+<div class="card"><h3>2NF</h3>In 1NF and <b>no partial dependencies</b> (no attribute depends on only part of the PK).</div>
+<div class="card"><h3>3NF</h3>In 2NF and <b>no transitive dependencies</b> (non-key attribute depending on another non-key).</div>
+<div class="card"><h3>Remember</h3>Normalization helps identify the right tables; then list business rules to find relationships, connectivity and cardinality.</div></div>
+<div class="ar">1NF بدون مجموعات متكررة، 2NF بدون اعتماد جزئي، 3NF بدون اعتماد انتقالي.</div></section>
+
+<section id="quiz"><h2>9. Interactive Quiz</h2><p class="lead">Green = correct, red = wrong. The right answer is always explained.</p>
+<div class="card"><span id="sc">Score: 0 / 0</span><div class="bar"><i id="pb"></i></div><button class="btn o" id="rst">Restart</button></div><div id="qs"></div></section>
+<div style="height:50px"></div></div>
+<script>
+const $=s=>document.querySelector(s);const chips=(id,items,fn)=>{const c=$(id);c.innerHTML=items.map((x,i)=>`<button class="chip" data-i="${i}">${x[0]}</button>`).join('');c.onclick=e=>{const b=e.target.closest('.chip');if(!b)return;c.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));b.classList.add('on');fn(items[b.dataset.i],+b.dataset.i)}};
+const AR=a=>`<div class="ar">${a}</div>`;
+chips('#pol',[['Student advisor','Every student in Tiny College must have a faculty advisor → each STUDENT row must be associated with an advisor.','كل طالب لازم يكون له مرشد أكاديمي.'],['Salesperson','Customers must be under the care of one salesperson → each customer links to exactly one salesperson.','كل عميل تحت مسؤولية بائع واحد.'],['Product code','Each product must be labeled with a product code → PRODUCT needs a mandatory code attribute.','كل منتج لازم له رمز.']],x=>$('#pout').innerHTML=x[1]+AR(x[2]));
+chips('#gc',[['Declarative','Says <b>what</b>, not how.','تقول ماذا وليس كيف.'],['Precise','Clear, agreed-upon meaning.','معنى واضح ومتفق عليه.'],['Atomic','One statement only.','جملة واحدة.'],['Consistent','Internally and externally.','متسقة داخلياً وخارجياً.'],['Expressible','In structured and natural language.','قابلة للتعبير.'],['Distinct','Non-redundant.','غير مكررة.'],['Business-oriented','Understood by business people.','يفهمها أهل العمل.']],x=>$('#gout').innerHTML=x[1]+AR(x[2]));
+const R=[['SCHOOL','operates','1:M','DEPARTMENT'],['DEPARTMENT','has','1:M','STUDENT'],['DEPARTMENT','offers','1:M','COURSE'],['COURSE','generates','1:M','CLASS'],['PROFESSOR','is an','1:1','EMPLOYEE'],['PROFESSOR','is dean of','1:1','SCHOOL'],['PROFESSOR','chairs','1:1','DEPARTMENT'],['PROFESSOR','teaches','1:M','CLASS'],['PROFESSOR','advises','1:M','STUDENT'],['PROFESSOR','is assigned to','M:1','DEPARTMENT'],['STUDENT','enrolls in','M:N','CLASS']];
+$('#tb').innerHTML=R.map((r,i)=>`<tr class="r" data-i="${i}">${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('');
+$('#tb').onclick=e=>{const t=e.target.closest('tr');if(!t)return;document.querySelectorAll('#tb tr').forEach(x=>x.classList.remove('hl'));t.classList.add('hl');const [a,v,c,b]=R[t.dataset.i];const m={'1:M':`One ${a} ${v} many ${b}; each ${b} belongs to one ${a}.`,'1:1':`Each ${a} ${v} exactly one ${b}, and vice versa.`,'M:1':`Many ${a} ${v} one ${b}.`,'M:N':`Many ${a} ${v} many ${b}. Implemented with the composite entity ENROLL.`}[c];$('#tout').innerHTML=m+AR(c=='M:N'?'علاقة متعدد لمتعدد وتُنفَّذ بكيان مركب.':'اقرأ العلاقة من الجهتين.')};
+function card(){const a=$('#mn').value,b=$('#mx').value;const o=a=='0'?'<b>optional</b>':'<b>mandatory</b>';$('#cout').innerHTML=`(${a},${b}): a professor teaches ${a=='0'?'zero':'at least one'} class${b=='N'?' with no upper limit':' and at most '+b}. Participation is ${o}.`}
+$('#mn').onchange=$('#mx').onchange=card;card();
+chips('#an',[['Update','Changing one employee’s job rate means editing every row where it repeats; miss one and the data conflicts.','تعديل قيمة مكررة لازم يتكرر بكل الصفوف.'],['Addition','You cannot add a new employee until he is assigned to a project (project number is part of the key).','ما بتقدر تضيف موظف جديد قبل ما ينعمل له مشروع.'],['Deletion','Deleting the only row of an employee’s project may delete everything known about that employee.','حذف الصف ممكن يحذف معلومات موظف كاملة.']],x=>$('#aout').innerHTML=x[1]+AR(x[2]));
+const pk=a=>a.map(x=>x[0]=='*'?`<th class="pk">${x.slice(1)}</th>`:`<th>${x}</th>`).join('');const T=(n,c)=>`<div class="tb"><h4>${n}</h4><table><tr>${pk(c)}</tr></table></div>`;
+const S=[['1NF','Key defined, no repeating groups',`<div class="tb"><h4>PROJECT_EMP</h4><table><tr>${pk(['*PROJ_NUM','PROJ_NAME','*EMP_NUM','EMP_NAME','JOB_CLASS','CHG_HOUR','HOURS'])}</tr><tr><td>15</td><td>Evergreen</td><td>103</td><td>June E. Arbough</td><td>Elec. Engineer</td><td>84.50</td><td>23.8</td></tr><tr><td>15</td><td>Evergreen</td><td>101</td><td>John G. News</td><td>Database Designer</td><td>105.00</td><td>19.4</td></tr></table></div>`,'Every row is now filled in (the repeated project number was added). The primary key is the composite <code>PROJ_NUM + EMP_NUM</code>. Problems remain: <b>partial</b> dependencies (PROJ_NAME on PROJ_NUM only; EMP_NAME, JOB_CLASS, CHG_HOUR on EMP_NUM only) and a <b>transitive</b> one (CHG_HOUR depends on JOB_CLASS).','الجدول فيه مفتاح مركب، وما زال فيه اعتماد جزئي وانتقالي.'],
+['2NF','Remove partial dependencies',T('PROJECT',['*PROJ_NUM','PROJ_NAME'])+T('EMPLOYEE',['*EMP_NUM','EMP_NAME','JOB_CLASS','CHG_HOUR'])+T('ASSIGN',['*PROJ_NUM','*EMP_NUM','HOURS']),'Write each key component on its own line, then the original key last, and put dependent attributes after each new key. Still left: the <b>transitive dependency</b> EMP_NUM → JOB_CLASS → CHG_HOUR.','نفصل كل جزء من المفتاح مع الصفات التابعة له. يبقى الاعتماد الانتقالي.'],
+['3NF','Remove transitive dependencies',T('PROJECT',['*PROJ_NUM','PROJ_NAME'])+T('ASSIGN',['*PROJ_NUM','*EMP_NUM','HOURS'])+T('EMPLOYEE',['*EMP_NUM','EMP_NAME','JOB_CLASS'])+T('JOB',['*JOB_CLASS','CHG_HOUR']),'Create a separate table for the attributes in the transitive relationship: <code>JOB(JOB_CLASS, CHG_HOUR)</code>. Now every non-key attribute depends on <b>the key, the whole key, and nothing but the key</b>. We end with 4 tables.','أنشأنا جدول JOB. صارت 4 جداول: PROJECT, ASSIGN, EMPLOYEE, JOB.']];
+chips('#st',S.map(s=>[s[0]]),(_,i)=>{const s=S[i];$('#sh').textContent=s[0]+' · '+s[1];$('#sb').innerHTML=s[2];$('#sn').innerHTML=s[3];$('#sa').innerHTML=s[4]});$('#st .chip').click();
+chips('#dc',[['PROJ_NAME','Depends on <b>PROJ_NUM</b> only → <b>partial dependency</b> (violates 2NF). Move to PROJECT.','يعتمد على جزء من المفتاح.'],['EMP_NAME','Depends on <b>EMP_NUM</b> only → <b>partial dependency</b>. Move to EMPLOYEE.','اعتماد جزئي.'],['JOB_CLASS','Depends on <b>EMP_NUM</b> only → <b>partial dependency</b>. Move to EMPLOYEE.','اعتماد جزئي.'],['CHG_HOUR','Partial (EMP_NUM) <b>and transitive</b> through JOB_CLASS (non-key → non-key). Ends up in JOB.','جزئي وانتقالي، مكانه جدول JOB.'],['HOURS','Needs <b>both</b> PROJ_NUM and EMP_NUM → full dependency. It stays in ASSIGN. ✓','يعتمد على المفتاح كاملاً، يبقى بـ ASSIGN.']],x=>$('#dout').innerHTML=x[1]+AR(x[2]));
+const Q=[['What does normalization do?',['Increases redundancy','Reduces redundancy and eliminates anomalies','Deletes tables'],1,'It assigns attributes to entities so redundancy and anomalies go away.'],['A good business rule is “atomic”. This means…',['One statement','Very short','Written in SQL'],0,'Atomic = a single statement.'],['The ENROLL entity in Tiny College is…',['A supertype','A composite entity','A weak attribute'],1,'It implements the M:N relationship STUDENT enrolls in CLASS.'],['Which is NOT part of 1NF?',['Key attributes defined','No repeating groups','No transitive dependencies'],2,'Transitive dependencies are removed in 3NF.'],['A partial dependency is when…',['An attribute depends on part of a composite PK','An attribute depends on a non-key','A table has no key'],0,'Removed in 2NF.'],['EMP_NUM → JOB_CLASS → CHG_HOUR is a…',['Partial dependency','Transitive dependency','Full dependency'],1,'Non-key depends on non-key: fixed by 3NF (JOB table).'],['After 3NF, the company example has how many tables?',['2','3','4'],2,'PROJECT, ASSIGN, EMPLOYEE, JOB.'],['In ASSIGN, HOURS depends on…',['PROJ_NUM only','EMP_NUM only','PROJ_NUM and EMP_NUM'],2,'It is a full dependency on the composite key.'],['Cardinality (0,N) means…',['Mandatory, many','Optional, many','Exactly one'],1,'Min 0 = optional; max N = many.'],['The hourly rate depends on…',['Project name','Employee’s job classification','Hours worked'],1,'That is why JOB(JOB_CLASS, CHG_HOUR) is separate.']];
+let sc=0,an=0;function quiz(){sc=an=0;$('#qs').innerHTML=Q.map((q,i)=>`<div class="q" data-i="${i}"><p>${i+1}. ${q[0]}</p>${q[1].map((o,j)=>`<button class="opt" data-j="${j}">${o}</button>`).join('')}<div class="tip" hidden></div></div>`).join('');up()}
+function up(){$('#sc').textContent=`Score: ${sc} / ${an} (of ${Q.length})`;$('#pb').style.width=an/Q.length*100+'%'}
+$('#qs').onclick=e=>{const b=e.target.closest('.opt'),q=b&&b.closest('.q');if(!q||q.dataset.d)return;q.dataset.d=1;const d=Q[q.dataset.i],ok=+b.dataset.j==d[2];b.classList.add(ok?'good':'bad');if(!ok)q.querySelectorAll('.opt')[d[2]].classList.add('good');an++;sc+=ok;const t=q.querySelector('.tip');t.hidden=false;t.textContent=d[3];up()};
+$('#rst').onclick=quiz;quiz();
+$('#lg').onclick=e=>{document.body.classList.toggle('ar');e.target.textContent=document.body.classList.contains('ar')?'English only':'عربي'};
+</script></body></html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Database Systems – فهرس المذاكرة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef1f6;--surface:#fff;--ink:#14213d;--mute:#5b6679;--line:#d5dbe6;--acc:#0b6e8a;--acc-soft:#dff1f6;--lab:#b4540a;--lab-soft:#fbeadb;--btn-ink:#fff;--sh:0 1px 2px rgba(20,33,61,.06),0 8px 24px rgba(20,33,61,.06)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1524;--surface:#16203a;--ink:#e8edf7;--mute:#9aa7bf;--line:#2a3757;--acc:#5fc3df;--acc-soft:#14323f;--lab:#f0a566;--lab-soft:#3a2a1a;--btn-ink:#0e1524;--sh:none}}
+:root[data-theme="dark"]{--bg:#0e1524;--surface:#16203a;--ink:#e8edf7;--mute:#9aa7bf;--line:#2a3757;--acc:#5fc3df;--acc-soft:#14323f;--lab:#f0a566;--lab-soft:#3a2a1a;--btn-ink:#0e1524;--sh:none}
+*{box-sizing:border-box}
+html{color-scheme:light dark;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.8 "IBM Plex Sans Arabic",Tahoma,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+header{padding:56px 0 28px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:28px}
+.tag{font:500 13px "IBM Plex Mono",monospace;color:var(--acc);direction:ltr}
+.theme{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:6px 16px;font:inherit;font-size:14px;cursor:pointer}
+h1{font-size:clamp(34px,6vw,56px);line-height:1.2;margin:0 0 12px;font-weight:700}
+h1 small{display:block;font:500 clamp(15px,2.2vw,18px)/1.6 "IBM Plex Mono",monospace;color:var(--mute);direction:ltr;text-align:right;margin-top:10px}
+.lead{max-width:60ch;color:var(--mute);margin:0 0 24px}
+.tools{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.search{flex:1 1 260px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:12px 16px;font:inherit}
+.search:focus{outline:2px solid var(--acc);outline-offset:1px}
+.count{color:var(--mute);font-size:14px}
+.path{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:28px 0 8px;font:500 13px "IBM Plex Mono",monospace;direction:ltr;justify-content:flex-end}
+.path a{color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--surface);padding:4px 12px;border-radius:8px}
+.path a:hover{border-color:var(--acc)}
+.path i{color:var(--mute);font-style:normal}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:20px;padding:12px 0 40px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh);padding:24px;display:flex;flex-direction:column;border-top:4px solid var(--acc)}
+.card.lab{border-top-color:var(--lab)}
+.meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.file{font:500 13px "IBM Plex Mono",monospace;color:var(--acc);background:var(--acc-soft);padding:2px 10px;border-radius:6px;direction:ltr}
+.lab .file{color:var(--lab);background:var(--lab-soft)}
+.kind{font-size:13px;color:var(--mute)}
+.card h2{margin:0;font-size:22px;line-height:1.4}
+.en{direction:ltr;text-align:right;font:500 14px "IBM Plex Mono",monospace;color:var(--mute);margin:2px 0 12px}
+.card p{margin:0 0 14px;color:var(--mute);font-size:15px}
+ul{list-style:none;padding:0;margin:0 0 20px;display:flex;flex-wrap:wrap;gap:8px}
+li{font-size:14px;border:1px solid var(--line);border-radius:8px;padding:2px 12px;direction:ltr}
+li.hit{background:var(--acc-soft);border-color:var(--acc)}
+.open{margin-top:auto;display:inline-flex;justify-content:center;align-items:center;text-decoration:none;background:var(--acc);color:var(--btn-ink);padding:12px 20px;border-radius:12px;font-weight:700}
+.lab .open{background:var(--lab)}
+.open:hover{filter:brightness(1.08)}
+.open:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.empty{display:none;text-align:center;color:var(--mute);padding:24px}
+footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--mute);font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="top"><span class="tag">DB / STUDY-INDEX</span><button class="theme" id="theme" type="button">الوضع الداكن</button></div>
+  <h1>دليل مذاكرة قواعد البيانات<small>ER Modeling · Normalization · SQL</small></h1>
+  <p class="lead">كل ملفاتك في مكان واحد: ثلاثة فصول نظرية وملف تطبيق عملي لـ SQL. ابدأ بالترتيب من الفصل الأول، أو ابحث عن أي موضوع مباشرة.</p>
+  <div class="tools">
+    <input class="search" id="q" type="search" placeholder="ابحث عن موضوع: Cardinality, SELECT, Normalization…" aria-label="بحث">
+    <span class="count" id="count"></span>
+  </div>
+  <nav class="path" aria-label="مسار المذاكرة"><a href="CH1.html">CH1</a><i>→</i><a href="CH2.html">CH2</a><i>→</i><a href="CH3.html">CH3</a><i>→</i><a href="Practical.html">Practical</a></nav>
+</header>
+
+<main class="grid">
+  <article class="card">
+    <div class="meta"><span class="file">CH1.html</span><span class="kind">الفصل الأول · نظري</span></div>
+    <h2>نمذجة الكيانات والعلاقات</h2>
+    <div class="en">Entity Relationship Modeling</div>
+    <p>قواعد العمل وكيف تتحول إلى قيود في قاعدة البيانات، وبناء مخطط ER خطوة بخطوة على مثال Tiny College.</p>
+    <ul><li>Business Rules</li><li>Data Names &amp; Definitions</li><li>Developing an ERD</li><li>Tiny College</li><li>Cardinality</li><li>Specialization</li><li>Quiz</li></ul>
+    <a class="open" href="CH1.html">افتح الفصل الأول ←</a>
+  </article>
+
+  <article class="card">
+    <div class="meta"><span class="file">CH2.html</span><span class="kind">الفصل الثاني · نظري</span></div>
+    <h2>تصميم قاعدة البيانات</h2>
+    <div class="en">Database Design</div>
+    <p>نموذج ER والجداول العلائقية والمفاتيح وقواعد التكامل وقاموس البيانات، مع تجارب تفاعلية واختبار.</p>
+    <ul><li>E-R Model</li><li>Relational Tables</li><li>Keys</li><li>Integrity Rules</li><li>Data Dictionary</li><li>Key Explorer</li><li>Integrity Simulator</li><li>Quiz</li></ul>
+    <a class="open" href="CH2.html">افتح الفصل الثاني ←</a>
+  </article>
+
+  <article class="card">
+    <div class="meta"><span class="file">CH3.html</span><span class="kind">الفصل الثالث · نظري</span></div>
+    <h2>النمذجة والتطبيع</h2>
+    <div class="en">ER Modeling &amp; Normalization</div>
+    <p>الـ Cardinality بصيغة (min, max)، ثم التطبيع خطوة بخطوة، وحالة دراسية لشركة إنشاءات.</p>
+    <ul><li>Business Rules</li><li>Tiny College</li><li>Cardinality (min, max)</li><li>Normalization</li><li>Construction Company Case</li></ul>
+    <a class="open" href="CH3.html">افتح الفصل الثالث ←</a>
+  </article>
+
+  <article class="card lab">
+    <div class="meta"><span class="file">Practical.html</span><span class="kind">العملي · تفاعلي</span></div>
+    <h2>معامل SQL العملية</h2>
+    <div class="en">SQL Practical Labs</div>
+    <p>ملخص SQL في 5 دقائق، ومحرر تجريبي تكتب فيه الاستعلامات مباشرة، و7 أجزاء تدريبية من الأساسيات حتى الاستعلامات المتقدمة.</p>
+    <ul><li>SQL in 5 minutes</li><li>Playground</li><li>SQL Editor</li><li>CREATE TABLE</li><li>INSERT</li><li>SELECT &amp; WHERE</li><li>Advanced Queries</li></ul>
+    <a class="open" href="Practical.html">افتح العملي ←</a>
+  </article>
+</main>
+<p class="empty" id="empty">لا توجد نتائج مطابقة لبحثك.</p>
+
+<footer>ضع هذا الملف في نفس المجلد مع CH1 وCH2 وCH3 وPractical حتى تعمل الروابط.</footer>
+</div>
+<script>
+(function(){
+  var q=document.getElementById('q'),cards=[].slice.call(document.querySelectorAll('.card')),
+      count=document.getElementById('count'),empty=document.getElementById('empty');
+  function run(){
+    var s=q.value.trim().toLowerCase(),n=0;
+    cards.forEach(function(c){
+      var lis=[].slice.call(c.querySelectorAll('li'));
+      lis.forEach(function(l){l.classList.remove('hit')});
+      var match=!s||c.textContent.toLowerCase().indexOf(s)>-1;
+      if(s)lis.forEach(function(l){if(l.textContent.toLowerCase().indexOf(s)>-1)l.classList.add('hit')});
+      c.style.display=match?'':'none';
+      if(match)n++;
+    });
+    count.textContent=n+' من '+cards.length+' ملفات';
+    empty.style.display=n?'none':'block';
+  }
+  q.addEventListener('input',run);run();
+  var b=document.getElementById('theme'),r=document.documentElement;
+  b.addEventListener('click',function(){
+    var cur=r.getAttribute('data-theme');
+    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    r.setAttribute('data-theme',dark?'light':'dark');
+    b.textContent=dark?'الوضع الداكن':'الوضع الفاتح';
+  });
+})();
+</script>
+</body>
+</html>
